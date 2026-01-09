@@ -1,0 +1,21 @@
+@import 'primeicons/primeicons.css';
+
+:root,
+body {
+  height: 100dvh;
+}
+
+body {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+#app {
+  padding: 1.5rem;
+  max-width: 2048px;
+  width: 100%;
+}
