@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from app.interfaces.http.schemas.environment_request import EnvironmentRequest
 from app.interfaces.http.mappers.environment_mapper import map_environment_request_to_dto
 from app.application.use_cases.generate_pddl_use_case import GeneratePDDLUseCase
-from app.interfaces.http.dependecies import get_generate_pddl_use_case
+from app.interfaces.http.dependencies import get_generate_pddl_use_case
 
 router = APIRouter()
 

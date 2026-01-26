@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from app.main import app
-from app.interfaces.http.dependecies import get_generate_pddl_use_case
+from app.interfaces.http.dependencies import get_generate_pddl_use_case
 from tests.interfaces.http.fakes.fake_use_case import FakeGeneratePDDLUseCase
 
 client = TestClient(app)

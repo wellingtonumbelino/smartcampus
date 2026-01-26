@@ -1,11 +1,12 @@
 {
-  "environment": "Bloco 1",
+  "name": "Bloco 1",
   "rooms": [
     {
       "name": "Sala 1",
       "type": "room",
+      "occupancy": 0,
       "devices": [
-        { "type": "air-conditioner", "id": "AC1" },
+        { "type": "air_conditioner", "id": "AC1" },
         { "type": "light", "id": "L1" },
         { "type": "light", "id": "L2" },
         { "type": "light", "id": "L3" },
