@@ -14,12 +14,12 @@ OUTPUT_DIR=/planner/runtime/output
 mkdir -p "$WORKDIR"
 mkdir -p "$OUTPUT_DIR"
 
-if [ ! -f "$DOMAIN_PDDL" ]: then
+if [ ! -f "$DOMAIN_PDDL" ]; then
     echo "Error: Domain file not found: $DOMAIN_PDDL" | tee "$OUTPUT_DIR/error.log"
     exit 1
 fi
 
-if [ ! -f "$PROBLEM_PDDL" ]: then
+if [ ! -f "$PROBLEM_PDDL" ]; then
     echo "Error: Problem file not found: $PROBLEM_PDDL" | tee "$OUTPUT_DIR"/error.log
     exit 1
 fi

@@ -13,7 +13,7 @@ class PlannerOutputService:
 		return self.history_path.exists()
 
 	def read_plan(self) -> str:
-		plan_path = self.history_path / "output" / "plan.tex"
+		plan_path = self.history_path / "output" / "plan.txt"
 			
 		if not plan_path.exists():
 			raise FileNotFoundError(f"Plan not found: {plan_path}")

@@ -3,14 +3,14 @@ from app.infrastructure.planner.planner_output_service import PlannerOutputServi
 from app.application.use_cases.run_planner_use_case import RunPlannerUseCase
 from app.interfaces.http.schemas.environment_request import EnvironmentRequest
 from app.interfaces.http.mappers.environment_mapper import map_environment_request_to_dto
-from app.interfaces.http.dependencies import get_generate_pddl_use_case
+from app.interfaces.http.dependencies import get_run_planner_use_case
 
 router = APIRouter(prefix="/planner", tags=["Planner"])
 
 @router.post("/run")
 def run_planner(
   request: EnvironmentRequest,
-  use_case: RunPlannerUseCase = Depends(get_generate_pddl_use_case)
+  use_case: RunPlannerUseCase = Depends(get_run_planner_use_case)
 ):
   try:
     input_dto = map_environment_request_to_dto(request)
@@ -47,7 +47,7 @@ def get_plan(job_id: str):
     "error": error_log
   }
 
-@router.get("history")
+@router.get("/history")
 def list_jobs():
   from app.infrastructure.pddl.pddl_filesystem_service import PDDLFilesystemService
 

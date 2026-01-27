@@ -71,7 +71,7 @@ class DockerPlannerExecutionService:
         }
       
       except subprocess.TimeoutExpired:
-        execution_time = time.time() = start_time
+        execution_time = time.time() - start_time
         (job_path / "output" / "error.log").write_text(f"Timeout after {self.TIMEOUT} seconds")
 
         return {

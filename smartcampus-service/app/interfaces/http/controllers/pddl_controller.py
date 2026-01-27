@@ -4,7 +4,7 @@ from app.interfaces.http.mappers.environment_mapper import map_environment_reque
 from app.application.use_cases.generate_pddl_use_case import GeneratePDDLUseCase
 from app.interfaces.http.dependencies import get_generate_pddl_use_case
 
-router = APIRouter()
+router = APIRouter(prefix="/pddl", tags=["PDDL"])
 
 @router.post("/pddl", response_model=str)
 def generate_pddl(
