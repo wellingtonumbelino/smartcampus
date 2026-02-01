@@ -5,7 +5,7 @@
 
   (:objects
     bl1_sl1 - room
-    bl1_sl1_ac1 bl1_sl1_ac2 - air-conditioner
+    bl1_sl1_ac1 bl1_sl1_ac2 - air_conditioner
     bl1_sl1_light1 bl1_sl1_light2 - light
   )
 

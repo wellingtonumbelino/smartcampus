@@ -2,15 +2,15 @@
   (:requirements :strips :typing :fluents :durative-actions :negative-preconditions :timed-initial-literals)
 
   (:types
-    room air-conditioner light
+    room air_conditioner light
   )
 
   (:predicates
     (operating_hour)
     (start_class)
-    (end_class_air ?r - room ?a - air-conditioner)
+    (end_class_air ?r - room ?a - air_conditioner)
     (end_class_light ?r - room ?l - light)
-    (air_conditioner_on ?r - room ?a - air-conditioner)
+    (air_conditioner_on ?r - room ?a - air_conditioner)
     (light_on ?r - room ?l - light)
   )
 
@@ -32,7 +32,7 @@
   )
 
   (:durative-action turn_on_air_conditioner_during_class
-    :parameters (?r - room ?a - air-conditioner)
+    :parameters (?r - room ?a - air_conditioner)
     :duration (= ?duration 0.2)
     :condition (and
       (at start (start_class))
@@ -68,7 +68,7 @@
   )
 
   (:durative-action turn_off_air_conditioner_when_occupancy_zero
-    :parameters (?r - room ?a - air-conditioner)
+    :parameters (?r - room ?a - air_conditioner)
     :duration (= ?duration 0)
     :condition (and
       (at start (start_class))
