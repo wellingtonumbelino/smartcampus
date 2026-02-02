@@ -28,7 +28,12 @@ class DockerPlannerExecutionService:
     with self._execution_lock:
       job_path = self.JOBS_PATH / job_id
 
+      print(f"\n[DEBUG] Job ID: {job_id}")
+      print(f"[DEBUG] Path solved: {job_path.iterdir()}")
+
       if not job_path.exists():
+        files = [f.name for f in job_path.iterdir()]
+        print(f"[DEBUG] files in the directory: {files}")
         raise FileNotFoundError(f"Job directory not found: {job_path}")
       
       self.LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
