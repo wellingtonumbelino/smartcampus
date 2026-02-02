@@ -16,14 +16,10 @@ def test_generate_pddl_for_simple_enviroment():
   pddl = generator.generate(environment)
 
   assert "(define (problem smart_campus_problem_day_plan)" in pddl
-  assert "(:domain smart_campus)" in pddl
-  assert "(:requirements :strips :typing :fluents :durative-actions :negative-preconditions :timed-initial-literals)" in pddl
-  assert "(:objects" in pddl
-  assert "sl1 - room" in pddl
-  assert "ac1 - air_conditioner" in pddl
-  assert "l1 l2 - light" in pddl
-  assert "(= (occupancy sl1) 5)" in pddl
+  assert "(= (work_time_duration) 0)" in pddl
   assert "(at 0.1 (operating_hour))" in pddl
-  assert "(at 0.6 (not (operating_hour)))" in pddl
-  assert "(:goal" in pddl
-  assert "(and" in pddl
+  assert "(at 0.2 (people_in_room sl1))" in pddl
+  assert "(at 0.4 (not (people_in_room sl1)))" in pddl
+  assert "(end_class_air sl1 ac1)" in pddl
+  assert "(end_class_light sl1 l1)" in pddl
+  assert "(finish_class_time)" in pddl

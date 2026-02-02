@@ -5,17 +5,21 @@
 
   (:objects
     bl1_sl1 - room
-    bl1_sl1_ac1 bl1_sl1_ac2 - air_conditioner
+    bl1_sl1_ac1 bl1_sl1_ac2 - air-conditioner
     bl1_sl1_light1 bl1_sl1_light2 - light
   )
 
   (:init
-    (= (occupancy bl1_sl1) 10)
+    (= (work_time_duration) 0) ; 0 equivale a 0h
 
     (at 0.1
-      (operating_hour))
-    (at 0.6
-      (not (operating_hour)))
+      (operating_hour)) ; 0.1 equivale a 2h
+
+    (at 0.2
+      (people_in_room bl1_sl1))
+
+    (at 0.4
+      (not (people_in_room bl1_sl1))) ; 0.3 equivale a 6h
   )
 
   (:goal
@@ -24,10 +28,7 @@
       (end_class_air bl1_sl1 bl1_sl1_ac2)
       (end_class_light bl1_sl1 bl1_sl1_light1)
       (end_class_light bl1_sl1 bl1_sl1_light2)
-      (not (light_on bl1_sl1 bl1_sl1_light1))
-      (not (light_on bl1_sl1 bl1_sl1_light2))
-      (not (air_conditioner_on bl1_sl1 bl1_sl1_ac1))
-      (not (air_conditioner_on bl1_sl1 bl1_sl1_ac2))
+      (finish_class_time)
     )
   )
 )

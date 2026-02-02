@@ -21,7 +21,7 @@ class RoomSchema(BaseModel):
   ])
 
 class EnvSchema(BaseModel):
-  enviriment: str = Field(..., example="bloco1")
+  environment: str = Field(..., example="bloco1")
   rooms: List[RoomSchema] = Field(..., example=[
     {
       "id": "sala1",

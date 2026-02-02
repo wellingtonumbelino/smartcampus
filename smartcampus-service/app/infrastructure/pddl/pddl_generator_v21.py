@@ -49,30 +49,50 @@ class PDDLGenerator(PDDLGenerator):
     return "\n".join(lines)
 
   def _generate_init(self, environment: Environment) -> str:
-    fluents = []
+    # fluents = []
+
+    # for room in environment.rooms:
+    #   room_name = self._sanitize_name(room.name)
+    #   fluents.append(f"(= (occupancy {room_name}) {room.occupancy})")
+    #   fluents.append(f"(= (work_time_duration) 0)")
+    
+    lines = ["  (:init"]
+    lines.append("    (= (work_time_duration) 0)")
+    lines.append("")
+
+    lines.append("    (at 0.1 (operating_hour))")
+    lines.append("")
 
     for room in environment.rooms:
       room_name = self._sanitize_name(room.name)
-      fluents.append(f"(= (occupancy {room_name}) {room.occupancy})")
-    
-    lines = [
-      "  (:init",
-      *fluents,
-      "",
-      f"  (at 0.1 (operating_hour))",
-      f"  (at 0.6 (not (operating_hour)))",
-      "   )"
-    ]
+      lines.append(f"   (at 0.2 (people_in_room {room_name}))")
+      lines.append("")
+      lines.append(f"   (at 0.4 (not (people_in_room {room_name})))")
+      lines.append("")
+
+    lines.append("  )")
 
     return "\n".join(lines)
   
   def _generate_goal(self, environment: Environment) -> str:
-    lines = [
-      "  (:goal (and",
-      "    (not (operating_hour))",
-      "  ))"
-    ]
+    lines = ["  (:goal (and"]
 
+    for room in environment.rooms:
+      room_name = self._sanitize_name(room.name)
+
+      for device in room.devices:
+        device_id = self._sanitize_name(device.id)
+        device_type = device.device_type
+
+        if device_type == "air_conditioner":
+          lines.append(f"   (end_class_air {room_name} {device_id})")
+        elif device_type == "light":
+          lines.append(f"   (end_class_light {room_name} {device_id})")
+
+    lines.append("      (finish_class_time))")
+    lines.append("    )")
+    lines.append("  )")
+    
     return "\n".join(lines)
   
   @staticmethod
