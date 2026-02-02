@@ -33,15 +33,18 @@ RUN apt-get update && apt-get install -y \
     make \
     libc6-dev \
     uuid-runtime \
+    dos2unix \
+    gcc-multilib \
+    g++-multilib \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /planner
 
 # Copy UPMurphi binary from the builder stage
-COPY --from=builder /build/upmurphi/bin /planner/upmurphi/bin
+COPY --from=builder /build/upmurphi /planner/upmurphi
 
 # Executable entrypoint
 COPY entrypoint.sh /planner/entrypoint.sh
-RUN chmod +x /planner/entrypoint.sh
+RUN dos2unix /planner/entrypoint.sh && chmod +x /planner/entrypoint.sh
 
 ENTRYPOINT ["/planner/entrypoint.sh"]
