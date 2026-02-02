@@ -90,7 +90,6 @@ class PDDLGenerator(PDDLGenerator):
           lines.append(f"   (end_class_light {room_name} {device_id})")
 
     lines.append("      (finish_class_time))")
-    lines.append("    )")
     lines.append("  )")
     
     return "\n".join(lines)
