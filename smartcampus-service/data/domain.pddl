@@ -17,7 +17,7 @@
   )
 
   (:functions
-    (work_time_duration) ;; !! [0, 100]
+    (work_time_duration)
   )
 
   (:durative-action start_campus_operating

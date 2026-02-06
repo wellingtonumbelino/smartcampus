@@ -36,6 +36,18 @@ if ! /planner/upmurphi/bin/pddl2upm domain.pddl problem.pddl > domain.m 2> "$OUT
 fi
 
 echo "[2/3] Compiling the planner"
+/planner/upmurphi/bin/upmc domain.m
+
+MAX_RETRIES=2
+COUNT=0
+
+echo "Waiting for domain_planner to be generated..."
+
+while [ ! -f "domain_planner" ] && [ $COUNT -lt $MAX_RETRIES ]; do
+    sleep 1
+    ((COUNT + 1))
+done
+
 if ! /planner/upmurphi/bin/upmc domain.m >> "$OUTPUT_DIR/error.log" 2>&1; then
     echo "Error: upmc compilation failed" >> "$OUTPUT_DIR/error.log"
     exit 1

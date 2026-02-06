@@ -29,7 +29,7 @@ class DockerPlannerExecutionService:
       job_path = self.JOBS_PATH / job_id
 
       print(f"\n[DEBUG] Job ID: {job_id}")
-      print(f"[DEBUG] Path solved: {job_path.iterdir()}")
+      print(f"[DEBUG] Path solved: {str(job_path.absolute())}")
 
       if not job_path.exists():
         files = [f.name for f in job_path.iterdir()]
