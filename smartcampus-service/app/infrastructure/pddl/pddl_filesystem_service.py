@@ -82,3 +82,6 @@ class PDDLFilesystemService:
           jobs.append(metadata)
 
     return sorted(jobs, key=lambda x: x["timestamp"])
+  
+  def get_plan_path(self, job_id: str) -> str:
+    return f"data/jobs/{job_id}/plan.txt"

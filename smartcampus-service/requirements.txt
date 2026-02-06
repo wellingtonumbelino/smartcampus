@@ -1,3 +1,6 @@
 fastapi
 pytest
 uvicorn
+apscheduler
+pydantic
+httpx
