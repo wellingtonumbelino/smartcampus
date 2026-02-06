@@ -4,10 +4,10 @@ from app.application.use_cases.run_planner_use_case_impl import RunPlannerUseCas
 from app.infrastructure.pddl.pddl_filesystem_service import PDDLFilesystemService
 from app.infrastructure.planner.docker_planner_execution_service import DockerPlannerExecutionService
 from app.infrastructure.scheduler.apscheduler_impl import APSchedulerImpl
-from app.domain.interfaces.plan_parser import PDDLPlanParser
+from app.infrastructure.pddl.plan_parser import PDDLPlanParser
 
-_scheduler_instance = APSchedulerImpl()
-_parser_instance = PDDLPlanParser(time_unit_to_hours=10.0)
+_scheduler_instance = None
+_parser_instance = None
 
 def get_generate_pddl_use_case():
   return GeneratePDDLUseCaseImpl(pddl_generator=PDDLGenerator())
@@ -24,3 +24,11 @@ def get_run_planner_use_case():
     parser=_parser_instance,
     scheduler=_scheduler_instance
   )
+
+def get_scheduler():
+  global _scheduler_instance
+  
+  if _scheduler_instance is None:
+    _scheduler_instance = APSchedulerImpl()
+    
+  return _scheduler_instance
