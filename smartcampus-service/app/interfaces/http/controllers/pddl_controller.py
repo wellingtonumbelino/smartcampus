@@ -6,7 +6,7 @@ from app.interfaces.http.dependencies import get_generate_pddl_use_case
 
 router = APIRouter(prefix="/pddl", tags=["PDDL"])
 
-@router.post("/pddl", response_model=str)
+@router.post("", response_model=str)
 def generate_pddl(
   request: EnvironmentRequest,
   use_case: GeneratePDDLUseCase = Depends(get_generate_pddl_use_case)

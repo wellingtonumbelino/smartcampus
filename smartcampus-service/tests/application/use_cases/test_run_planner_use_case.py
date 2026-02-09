@@ -20,7 +20,7 @@ def test_execute_planner_success_calls_scheduler():
         generate_pddl_use_case=gen_pddl_mock,
         filesystem_service=fs_mock,
         planner_service=planner_mock,
-        parser=planner_mock,
+        parser=parser_mock,
         scheduler=scheduler_mock
       )
 
@@ -30,4 +30,4 @@ def test_execute_planner_success_calls_scheduler():
       assert result["scheduled_actions_count"] == 1
 
       scheduler_mock.schedule_many.assert_called_once()
-      fs_mock.archive_job.assert_called_with("job_123", "success", 1.5)
+      fs_mock.archive_job.assert_called_with("job123", "success", 1.5)

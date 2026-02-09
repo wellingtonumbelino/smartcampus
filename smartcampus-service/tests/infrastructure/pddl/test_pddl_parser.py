@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app.infrastructure.pddl.plan_parser import PDDLPlanParser
 
 def test_pddl_parser_conversion():
@@ -10,7 +10,7 @@ def test_pddl_parser_conversion():
   actions = parser.parse_file(plan_text, reference_time)
 
   assert len(actions) == 1
-  assert actions[0].execution_time == datetime(2023, 1, 1, 9, 0, 0)
+  assert actions[0].execution_time == datetime(2023, 1, 1, 9, 0, 0, tzinfo=timezone.utc)
   assert actions[0].target_device_id == "l1"
   assert actions[0].command == "ON"
 
