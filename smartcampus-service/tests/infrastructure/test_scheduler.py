@@ -31,8 +31,10 @@ async def test_scheduler_sends_http_request():
     )
     scheduler.schedule_action(action)
 
-    # wait enough for job to run
-    await asyncio.sleep(3)
+    for _ in range(30):
+        if len(events) > 0:
+            break
+        await asyncio.sleep(0.1)
 
     await scheduler.shutdown()
     await client.aclose()

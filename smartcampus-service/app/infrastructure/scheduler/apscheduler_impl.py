@@ -10,18 +10,24 @@ class APSchedulerImpl(IScheduler):
     self.logger = logging.getLogger(__name__)
     self.base_url = base_url or "https://api.terceira.com"
     self.api_key = api_key
-    
+
     try:
       loop = asyncio.get_running_loop()
+
     except RuntimeError:
       loop = None
+
     if loop is not None:
       self.scheduler = AsyncIOScheduler(event_loop=loop, timezone=timezone)
     else:
       self.scheduler = AsyncIOScheduler(timezone=timezone)
+
     self._client_provided = client is not None
     self.client = client or httpx.AsyncClient(base_url=self.base_url, timeout=10.0)
     self.scheduler.start()
+
+    if not self._client_provided:
+      await self.client.aclose()
 
   async def _execute_iot_call(self, action: ScheduleAction):
      self.logger.info("Executing action %s for device %s at %s", action.action_name, action.target_device_id, action.execution_time)
