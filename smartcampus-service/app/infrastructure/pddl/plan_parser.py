@@ -23,8 +23,10 @@ class PDDLPlanParser:
       "start_campus_operating": "START"
     }
 
-  def parse_file(self, file_content: str, reference_date: datetime) -> list[ScheduleAction]:
+  def parse_file(self, file_content: str, reference_date: datetime, override_multiplier: float = None) -> list[ScheduleAction]:
     actions = []
+
+    multiplier = override_multiplier if override_multiplier is not None else self.time_multiplier
 
     if reference_date.tzinfo is None:
       ref_aware = reference_date.replace(tzinfo=timezone.utc)
@@ -51,7 +53,7 @@ class PDDLPlanParser:
       if reference_date.tzinfo is None:
         reference_date = reference_date.replace(tzinfo=timezone.utc)
 
-      execution_time = ref_aware + timedelta(hours=raw_time * self.time_multiplier)
+      execution_time = ref_aware + timedelta(hours=raw_time * multiplier)
 
       actions.append(ScheduleAction(
         execution_time=execution_time,

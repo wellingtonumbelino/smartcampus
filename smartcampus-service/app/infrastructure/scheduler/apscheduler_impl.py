@@ -8,8 +8,8 @@ import asyncio
 class APSchedulerImpl(IScheduler):
   def __init__(self, base_url: str = None, api_key: str = None, client: httpx.AsyncClient = None, timezone="UTC"):
     self.logger = logging.getLogger(__name__)
-    self.base_url = base_url or "https://api.terceira.com"
-    self.api_key = api_key
+    self.base_url = base_url or "http://localhost:8000"
+    self.api_key = api_key or "test-api-key"
 
     try:
       loop = asyncio.get_running_loop()
@@ -69,6 +69,27 @@ class APSchedulerImpl(IScheduler):
     for action in actions:
       self.schedule_action(action)
 
+  def clear_all_jobs(self):
+    """Remove all pending appointments from the scheduler."""
+    try:
+      self.scheduler.remove_all_jobs()
+      self.logger.info("All scheduled jobs have been cleared.")
+    except Exception as e:
+      self.logger.error(f"Error clearing scheduled jobs: {e}")
+
+  def get_scheduled_jobs(self):
+    """Return a list of all currently scheduled jobs."""
+    jobs = self.scheduler.get_jobs()
+    job_list = []
+    for job in jobs:
+      job_list.append({
+        "id": job.id,
+        "next_run_time": job.next_run_time.isoformat() if job.next_run_time else None,
+        "function": job.func.__name__,
+        "args": str(job.args),
+      })
+    return job_list
+  
   async def shutdown(self):
     self.logger.info("Shutting down scheduler")
     self.scheduler.shutdown(wait=False)
