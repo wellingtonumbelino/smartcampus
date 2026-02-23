@@ -1,15 +1,28 @@
-; --Plan #00001--------------------------
-; -- Discretisation: 0.100----------------
-; ---------------------------------------
-0.000: ( start_campus_operating) [0.400]
-0.201: ( turn_on_light_during_class bl1_sl1 bl1_sl1_light1) [0.200]
-0.202: ( turn_on_light_during_class bl1_sl1 bl1_sl1_light2) [0.200]
-0.203: ( turn_on_air_conditioner_during_class bl1_sl1 bl1_sl1_ac1) [0.200]
-0.204: ( turn_on_air_conditioner_during_class bl1_sl1 bl1_sl1_ac2) [0.200]
-0.305: ( turn_off_light_when_occupancy_zero bl1_sl1 bl1_sl1_light1) [0.100]
-0.306: ( turn_off_light_when_occupancy_zero bl1_sl1 bl1_sl1_light2) [0.100]
-0.307: ( turn_off_air_conditioner_when_occupancy_zero bl1_sl1 bl1_sl1_ac1) [0.100]
-0.308: ( turn_off_air_conditioner_when_occupancy_zero bl1_sl1 bl1_sl1_ac2) [0.100]
-; ---------------------------------------
-; --Plan duration: 0.508, weight: 0005----
-; ---------------------------------------
+; States evaluated: 60
+; Cost: 0.000
+; Time 0.04
+0.001: (start_campus_operating)  [15.000]
+1.001: (turn_on_light bl1_sl1 bl1_sl1_l4)  [2.000]
+1.001: (turn_on_light bl1_sl1 bl1_sl1_l3)  [2.000]
+1.001: (turn_on_light bl1_sl1 bl1_sl1_l2)  [2.000]
+1.001: (turn_on_light bl1_sl1 bl1_sl1_l1)  [2.000]
+1.001: (turn_on_air_conditioner bl1_sl1 bl1_sl1_ac2)  [2.000]
+1.001: (turn_on_air_conditioner bl1_sl1 bl1_sl1_ac1)  [2.000]
+10.001: (turn_on_light bl1_sl2 bl1_sl2_l4)  [2.000]
+10.001: (turn_on_light bl1_sl2 bl1_sl2_l3)  [2.000]
+10.001: (turn_on_light bl1_sl2 bl1_sl2_l2)  [2.000]
+10.001: (turn_on_light bl1_sl2 bl1_sl2_l1)  [2.000]
+10.001: (turn_on_air_conditioner bl1_sl2 bl1_sl2_ac2)  [2.000]
+10.001: (turn_on_air_conditioner bl1_sl2 bl1_sl2_ac1)  [2.000]
+15.001: (turn_off_light bl1_sl2 bl1_sl2_l4)  [1.000]
+15.001: (turn_off_light bl1_sl2 bl1_sl2_l3)  [1.000]
+15.001: (turn_off_light bl1_sl2 bl1_sl2_l2)  [1.000]
+15.001: (turn_off_light bl1_sl2 bl1_sl2_l1)  [1.000]
+15.001: (turn_off_light bl1_sl1 bl1_sl1_l4)  [1.000]
+15.001: (turn_off_light bl1_sl1 bl1_sl1_l3)  [1.000]
+15.001: (turn_off_light bl1_sl1 bl1_sl1_l2)  [1.000]
+15.001: (turn_off_light bl1_sl1 bl1_sl1_l1)  [1.000]
+15.001: (turn_off_air_conditioner bl1_sl2 bl1_sl2_ac2)  [1.000]
+15.001: (turn_off_air_conditioner bl1_sl2 bl1_sl2_ac1)  [1.000]
+15.001: (turn_off_air_conditioner bl1_sl1 bl1_sl1_ac2)  [1.000]
+15.001: (turn_off_air_conditioner bl1_sl1 bl1_sl1_ac1)  [1.000]

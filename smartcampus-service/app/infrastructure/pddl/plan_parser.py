@@ -16,10 +16,10 @@ class PDDLPlanParser:
     self.time_multiplier = time_unit_to_hours
     self.pattern = r"(\d+\.\d+):\s*\(\s*(\w+)(?:\s+(.*?))?\)\s*\[(\d+\.\d+)\]"
     self.action_map = {
-      "turn_on_light_during_class": "ON",
-      "turn_off_light_when_occupancy_zero": "OFF",
-      "turn_on_air_conditioner_during_class": "ON",
-      "turn_off_air_conditioner_when_occupancy_zero": "OFF",
+      "turn_on_light": "ON",
+      "turn_off_light": "OFF",
+      "turn_on_air_conditioner": "ON",
+      "turn_off_air_conditioner": "OFF",
       "start_campus_operating": "START"
     }
 
