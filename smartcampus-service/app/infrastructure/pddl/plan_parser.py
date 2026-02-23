@@ -26,6 +26,11 @@ class PDDLPlanParser:
   def parse_file(self, file_content: str, reference_date: datetime) -> list[ScheduleAction]:
     actions = []
 
+    if reference_date.tzinfo is None:
+      ref_aware = reference_date.replace(tzinfo=timezone.utc)
+    else:
+      ref_aware = reference_date
+
     for line in file_content.splitlines():
       match = re.search(self.pattern, line)
 
@@ -46,7 +51,7 @@ class PDDLPlanParser:
       if reference_date.tzinfo is None:
         reference_date = reference_date.replace(tzinfo=timezone.utc)
 
-      execution_time = reference_date + timedelta(hours=raw_time * self.time_multiplier)
+      execution_time = ref_aware + timedelta(hours=raw_time * self.time_multiplier)
 
       actions.append(ScheduleAction(
         execution_time=execution_time,

@@ -26,9 +26,6 @@ class APSchedulerImpl(IScheduler):
     self.client = client or httpx.AsyncClient(base_url=self.base_url, timeout=10.0)
     self.scheduler.start()
 
-    if not self._client_provided:
-      await self.client.aclose()
-
   async def _execute_iot_call(self, action: ScheduleAction):
      self.logger.info("Executing action %s for device %s at %s", action.action_name, action.target_device_id, action.execution_time)
 
