@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, BackgroundTasks
 from datetime import datetime, timezone
 from app.interfaces.http.dependencies import get_scheduler
 from app.infrastructure.pddl.plan_parser import PDDLPlanParser
@@ -8,7 +8,7 @@ router = APIRouter(prefix="/scheduler", tags=["Scheduler"])
 
 @router.post("/run-plan")
 async def run_plan_manually(
-  start_at: datetime = Query(None, description="Start date/time (ISO format). If null, use 'now'."),
+  background_tasks: BackgroundTasks,
   seconds_per_unit: float = Query(10.0, description="How many real SECONDS is 1.0 unit of PDDL worth?")
 ):
   """
@@ -23,7 +23,7 @@ async def run_plan_manually(
 
   multiplier_in_hours = seconds_per_unit / 3600.0
 
-  ref_date = start_at or datetime.now(timezone.utc)
+  ref_date = datetime.now(timezone.utc)
 
   try:
     with open("data/plan.pddl", "r", encoding="utf-8") as f:
@@ -31,7 +31,7 @@ async def run_plan_manually(
 
     actions = parser.parse_file(plan_content, ref_date, override_multiplier=multiplier_in_hours)
 
-    scheduler.schedule_many(actions)
+    background_tasks.add_task(scheduler.execute_plan_in_batches, actions, seconds_per_unit)
 
     return {
       "status": "Plan scheduled for testing",
@@ -40,8 +40,8 @@ async def run_plan_manually(
       "actions_count": len(actions),
       "actions": [
         {
-          "name": action.name,
-          "scheduled_time": action.scheduled_time.isoformat()
+          "name": action.action_name,
+          "scheduled_time": action.execution_time.isoformat()
         }
         for action in actions
       ]

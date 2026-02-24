@@ -1,6 +1,7 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from .scheduler_interface import IScheduler
 from app.domain.entities.plan import ScheduleAction
+from itertools import groupby
 import httpx
 import logging
 import asyncio
@@ -65,9 +66,29 @@ class APSchedulerImpl(IScheduler):
       replace_existing=True
     )
 
-  def schedule_many(self, actions: list[ScheduleAction]):
-    for action in actions:
-      self.schedule_action(action)
+  async def execute_plan_in_batches(self, actions: list[ScheduleAction], seconds_per_unit: float):
+    filtered_actions = [a for a in actions if a.action_name != 'start_campus_operating']
+    groups = groupby(filtered_actions, key=lambda x: x.execution_time)
+
+    for execution_time, group in groups:
+      batch = list(group)
+
+      if not batch:
+        continue
+
+      self.logger.info(f"--- Starting batch: {len(batch)} action for time {execution_time} ---")
+
+      tasks = [self._execute_iot_call(action) for action in batch]
+      await asyncio.gather(*tasks)
+
+      avg_duration = sum(a.duration for a in batch) / len(batch)
+      wait_time = avg_duration * seconds_per_unit
+
+      self.logger.info(f"Batch completed. Expected average duration: {wait_time:.2f}s")
+
+      await asyncio.sleep(wait_time)
+
+    self.logger.info(f"Sequential plan execution completed successfully.")
 
   def clear_all_jobs(self):
     """Remove all pending appointments from the scheduler."""
