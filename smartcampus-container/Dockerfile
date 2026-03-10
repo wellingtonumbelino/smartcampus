@@ -1,50 +1,51 @@
-# STAGE 1 - Build UPMurphi
-FROM ubuntu:22.04 AS builder
+# Using Ubuntu 18.04
+FROM ubuntu:18.04
 
+# Avoid interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Dependencies for building UPMurphi
+# Install dependencies for Ubuntu 18.04
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    flex \
-    bison \
-    libc6-dev-i386 \
-    gcc-multilib \
-    g++-multilib \
-    && rm -rf /var/lib/apt/lists/*
+  cmake \
+  coinor-libclp-dev \
+  coinor-libcoinutils-dev \
+  coinor-libosi-dev \
+  coinor-libcbc-dev \
+  coinor-libcgl-dev \
+  zlib1g-dev \
+  libbz2-dev \
+  doxygen \
+  bison \
+  flex \
+  git \
+  g++ \
+  make \
+  ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /build
+# Define the working directory
+WORKDIR /opt/popf-tif
 
-# Copy UPMurphi source code
-COPY upmurphi ./upmurphi
+# Clone the repository and compile the code
+RUN git clone https://github.com/popftif/popf-tif . && \
+  cd planner/src && \
+  chmod +x ./build-instructions.txt && \
+  ./build-instructions.txt && \
+  cd ../release && \
+  make popf3-clp
 
-# Compile UPMurphi
-WORKDIR /build/upmurphi/src
-RUN make
+# Copy the entry point script to the container
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# STAGE 2 - Runtime
-FROM ubuntu:22.04
+# Enable execute permissions for the entry point script
+RUN chmod +x /usr/local/bin/entrypoint.sh && \
+  ln -sf $(find /opt/popf-tif/planner/release -name "popf3-clp" | head -n 1) /usr/local/bin/popf3-clp && \
+  chmod +x /usr/local/bin/popf3-clp
 
-ENV DEBIAN_FRONTEND=noninteractive
+RUN mkdir /output && chmod 777 /output
 
-# Dependencies for running UPMurphi
-RUN apt-get update && apt-get install -y \
-    g++ \
-    make \
-    libc6-dev \
-    uuid-runtime \
-    dos2unix \
-    gcc-multilib \
-    g++-multilib \
-    && rm -rf /var/lib/apt/lists/*
+# Directory for PDDL files
+WORKDIR /data
 
-WORKDIR /planner
-
-# Copy UPMurphi binary from the builder stage
-COPY --from=builder /build/upmurphi /planner/upmurphi
-
-# Executable entrypoint
-COPY entrypoint.sh /planner/entrypoint.sh
-RUN dos2unix /planner/entrypoint.sh && chmod +x /planner/entrypoint.sh
-
-ENTRYPOINT ["/planner/entrypoint.sh"]
+# Set the entry point to the compiled binary
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
