@@ -1,89 +1,113 @@
 (define (domain smart_campus)
-  (:requirements :strips :fluents :typing :durative-actions :negative-preconditions :timed-initial-literals)
+  (:requirements :strips :typing :fluents :durative-actions :timed-initial-literals)
 
-  (:types
-    room air_conditioner light
-  )
+  (:types room air_conditioner light)
 
   (:predicates
     (operating_hour)
     (work_time)
-    (people_in_room ?r - room)
-    (air_conditioner_on ?r - room ?a - air_conditioner)
+    (out_work_time)
+    (peak_hours)
+    (ac_on ?r - room ?a - air_conditioner)
+    (ac_off ?r - room ?a - air_conditioner)
     (light_on ?r - room ?l - light)
-    (finish_class_time)
-    (end_class_air ?r - room ?a - air_conditioner)
-    (end_class_light ?r - room ?l - light)
+    (light_off ?r - room ?l - light)
   )
 
   (:functions
-    (work_time_duration)
+    (people_in_room ?r - room)
+    (ac_temperature ?a - air_conditioner)
+    (metric_total_cost)
   )
 
   (:durative-action start_campus_operating
     :parameters ()
-    :duration (= ?duration 0.4)
-    :condition (and
+    :duration (= ?duration 15.0)
+    :condition (and 
       (at start (operating_hour))
-      (at start (not (work_time)))
+      (over all (operating_hour))
     )
-    :effect (and
+    :effect (and 
       (at start (work_time))
-      (at end (finish_class_time))
+      (at end (out_work_time))
     )
   )
 
-  (:durative-action turn_on_air_conditioner_during_class
+  (:durative-action turn_on_air_conditioner
     :parameters (?r - room ?a - air_conditioner)
-    :duration (= ?duration 0.2)
-    :condition (and
+    :duration (= ?duration 2.0)
+    :condition (and 
       (at start (work_time))
-      (at start (people_in_room ?r))
-      (at start (not (air_conditioner_on ?r ?a)))
+      (over all (> (people_in_room ?r) 0))
     )
-    :effect (and
-      (at start (air_conditioner_on ?r ?a))
+    :effect (and 
+      (at start (ac_on ?r ?a))
+      (at end (increase (metric_total_cost) 4))
     )
   )
 
-  (:durative-action turn_on_light_during_class
-    :parameters (?r - room ?l - light)
-    :duration (= ?duration 0.2)
-    :condition (and
-      (at start (work_time))
-      (at start (people_in_room ?r))
-      (at start (not (light_on ?r ?l)))
-    )
-    :effect (and
-      (at start (light_on ?r ?l))
-    )
-  )
-
-  (:durative-action turn_off_air_conditioner_when_occupancy_zero
+    (:durative-action turn_on_air_conditioner_peak_hours
     :parameters (?r - room ?a - air_conditioner)
-    :duration (= ?duration 0.1)
-    :condition (and
+    :duration (= ?duration 3.0)
+    :condition (and 
       (at start (work_time))
-      (at start (not (people_in_room ?r)))
-      (at start (air_conditioner_on ?r ?a))
+      (at start (peak_hours))
+      (over all (> (people_in_room ?r) 0))
     )
-    :effect (and
-      (at start (not (air_conditioner_on ?r ?a)))
-      (at end (end_class_air ?r ?a))
+    :effect (and 
+      (at start (ac_on ?r ?a))
+      (at end (increase (metric_total_cost) 2))
     )
   )
 
-  (:durative-action turn_off_light_when_occupancy_zero
-    :parameters (?r - room ?l - light)
-    :duration (= ?duration 0.1)
-    :condition (and
-      (at start (work_time))
-      (at start (not (people_in_room ?r)))
-      (at start (light_on ?r ?l))
+  (:durative-action turn_off_air_conditioner
+    :parameters (?r - room ?a - air_conditioner)
+    :duration (= ?duration 1.0)
+    :condition (and 
+      (at start (ac_on ?r ?a))
+      (over all (= (people_in_room ?r) 0))
     )
-    :effect (and
-      (at start (not (light_on ?r ?l)))
-      (at end (end_class_light ?r ?l))
+    :effect (and 
+      (at start (ac_off ?r ?a))
     )
   )
+
+  (:durative-action turn_on_light
+    :parameters (?r - room ?l - light)
+    :duration (= ?duration 2.0)
+    :condition (and 
+      (at start (work_time))
+      (over all (> (people_in_room ?r) 0))
+    )
+    :effect (and 
+      (at start (light_on ?r ?l))
+      (at end (increase (metric_total_cost) 2))
+    )
+  )
+
+  (:durative-action turn_off_light
+    :parameters (?r - room ?l - light)
+    :duration (= ?duration 1.0)
+    :condition (and 
+      (at start (light_on ?r ?l))
+      (over all (= (people_in_room ?r) 0))
+    )
+    :effect (and 
+      (at start (light_off ?r ?l))
+    )
+  )
+
+  (:durative-action set_ac_temperature_25
+      :parameters (?r - room ?a - air_conditioner)
+      :duration (= ?duration 3.0)
+      :condition (and 
+        (at start (ac_on ?r ?a))
+        (at start (peak_hours))
+        (over all (peak_hours))
+      )
+      :effect (and 
+        (at start (assign (ac_temperature ?a) 25))
+        (at end (decrease (metric_total_cost) 1))
+      )
+  ) 
 )

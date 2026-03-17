@@ -45,10 +45,13 @@ class DockerPlannerExecutionService:
         cmd = [
           "docker", "run", "--rm",
           "-v", f"{job_path.resolve()}:/planner/runtime",
-          "planner-image",
+          "smart-planner",
           "/planner/runtime/domain.pddl",
           "/planner/runtime/problem.pddl",
         ]
+
+        print(f"[INFO] Running Docker command: {' '.join(cmd)}")
+        print(f"[INFO] Volume path: {job_path.resolve()}")
 
         result = subprocess.run(
           cmd,
@@ -57,6 +60,10 @@ class DockerPlannerExecutionService:
           timeout=self.TIMEOUT,
           check=False
         )
+
+        print(f"[DEBUG] Docker stdout:\n{result.stdout}")
+        print(f"[DEBUG] Docker stderr:\n{result.stderr}")
+        print(f"[DEBUG] Return code: {result.returncode}")
 
         execution_time = time.time() - start_time
 

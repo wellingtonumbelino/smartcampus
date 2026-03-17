@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from app.application.use_cases.run_planner_use_case import RunPlannerUseCase
 from app.application.use_cases.generate_pddl_use_case import GeneratePDDLUseCase
 from app.infrastructure.pddl.pddl_filesystem_service import PDDLFilesystemService
@@ -32,6 +34,11 @@ class RunPlannerUseCaseImpl(RunPlannerUseCase):
 
       if execution_result["success"]:
         plan_path = self._filesystem.get_plan_path(job_id)
+
+        plan_file = Path(plan_path)
+
+        if not plan_file.exists():
+          raise FileNotFoundError(f"Plan file not created: {plan_path}")
 
         with open(plan_path, "r") as f:
           plan_content = f.read()
