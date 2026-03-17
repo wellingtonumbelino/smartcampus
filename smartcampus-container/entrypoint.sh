@@ -1,23 +1,22 @@
 #!/bin/bash
 
 # Create a directory to output files
-OUTPUT_DIR="$(dirname "$1")/output"
-mkdir -p "$OUTPUT_DIR"
+mkdir -p /output
 
 # Run the planner
-popf3-clp "$@" > "$OUTPUT_DIR/plan.txt" 2> "$OUTPUT_DIR/error.log"
+popf3-clp "$@" > /output/plan.txt 2> /output/error.log
 
 # Capture the exit code of the planner
 EXIT_CODE=$?
 
 # Check if file is empty
-if [ ! -s "$OUTPUT_DIR/plan.txt" ]; then
-    rm "$OUTPUT_DIR/error.log"
+if [ ! -s /output/plan.txt ]; then
+    rm /output/error.log
 fi
 
 # See plan in terminal
-if [ -f "$OUTPUT_DIR/plan.txt" ]; then
-    cat "$OUTPUT_DIR/plan.txt"
+if [ -f /output/plan.txt ]; then
+    cat /output/plan.txt
 fi
 
 exit $EXIT_CODE
