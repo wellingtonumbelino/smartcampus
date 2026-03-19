@@ -32,6 +32,10 @@ class RunPlannerUseCaseImpl(RunPlannerUseCase):
 
       execution_result = self._planner.run(job_id)
 
+      if not execution_result.get("success"):
+        error_detail = execution_result.get("stderr") or execution_result.get("output")
+        raise Exception(f"Planner execution error: {error_detail}")
+
       if execution_result["success"]:
         plan_path = self._filesystem.get_plan_path(job_id)
 

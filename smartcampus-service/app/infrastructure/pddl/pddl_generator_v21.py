@@ -1,99 +1,77 @@
-from typing import List
-from app.domain.entities.environment import Environment
-from app.domain.interfaces.pddl_generator import PDDLGenerator
+from app.application.dto.environment_input_dto import ProblemDefinitionDTO
+from app.domain.interfaces.pddl_generator import PDDLGenerator as IPDDLGenerator
 
-class PDDLGenerator(PDDLGenerator):
-  def generate(self, environment: Environment) -> str:
-    lines: List[str] = []
-
-    problem_name = "smart_campus_problem_day_plan"
-
-    lines.append(f"(define (problem {problem_name})")
-    lines.append("  (:domain smart_campus)")
-    lines.append("")
-    lines.append(f"(:requirements :strips :typing :fluents :durative-actions :negative-preconditions :timed-initial-literals)")
-    lines.append("")
-    lines.append(self._generate_objects(environment))
-    lines.append("")
-    lines.append(self._generate_init(environment))
-    lines.append("")
-    lines.append(self._generate_goal(environment))
-    lines.append(")")
-
-    return "\n".join(lines)
-
-  def _generate_objects(self, environment: Environment) -> str:
-    rooms: list[str] = []
-    devices_by_type: dict[str, list[str]] = {}
-
-    for room in environment.rooms:
-      rooms.append(self._sanitize_name(room.name))
-
-      for device in room.devices:
-        device_type = device.device_type
-        device_id = self._sanitize_name(device.id)
-
-        devices_by_type.setdefault(device_type, []).append(device_id)
-
+class PDDLGenerator(IPDDLGenerator):
+  def generate(self, prob: ProblemDefinitionDTO) -> str:
     lines = [
-      "  (:objects",
-      f"    {' '.join(sorted(set(rooms)))} - room",
+      f"(define (problem {prob.name})",
+      f"  (:domain {prob.domain})",
+      "",
+      self._generate_objects(prob.objects),
+      "",
+      self._generate_init(prob.init),
+      "",
+      self._generate_goal(prob.goal),
+      ""
     ]
 
-    for device_type, device_ids in devices_by_type.items():
-      unique_devices = sorted(set(device_ids))
-      lines.append(f"    {' '.join(unique_devices)} - {device_type}")
-
-    lines.append("   )")
-
+    if prob.metric:
+      lines.append(f"  (:metric {prob.metric})")
+    
+    lines.append(")")
     return "\n".join(lines)
 
-  def _generate_init(self, environment: Environment) -> str:
-    # fluents = []
+  def _generate_objects(self, obj_dto) -> str:
+    lines = ["  (:objects"]
 
-    # for room in environment.rooms:
-    #   room_name = self._sanitize_name(room.name)
-    #   fluents.append(f"(= (occupancy {room_name}) {room.occupancy})")
-    #   fluents.append(f"(= (work_time_duration) 0)")
-    
+    mapping = {
+      "room": obj_dto.rooms,
+      "air_conditioner": obj_dto.air_conditioners,
+      "light": obj_dto.lights
+    }
+
+    for pddl_type, items in mapping.items():
+      if items:
+        lines.append(f"    {' '.join(items)} - {pddl_type}")
+            
+    lines.append("  )")
+    return "\n".join(lines)
+
+  def _generate_init(self, init_dto) -> str:
     lines = ["  (:init"]
-    lines.append("    (= (work_time_duration) 0)")
-    lines.append("")
-
-    lines.append("    (at 0.1 (operating_hour))")
-    lines.append("")
-
-    for room in environment.rooms:
-      room_name = self._sanitize_name(room.name)
-      lines.append(f"   (at 0.2 (people_in_room {room_name}))")
-      lines.append("")
-      lines.append(f"   (at 0.4 (not (people_in_room {room_name})))")
-      lines.append("")
-
-    lines.append("  )")
-
-    return "\n".join(lines)
-  
-  def _generate_goal(self, environment: Environment) -> str:
-    lines = ["  (:goal (and"]
-
-    for room in environment.rooms:
-      room_name = self._sanitize_name(room.name)
-
-      for device in room.devices:
-        device_id = self._sanitize_name(device.id)
-        device_type = device.device_type
-
-        if device_type == "air_conditioner":
-          lines.append(f"   (end_class_air {room_name} {device_id})")
-        elif device_type == "light":
-          lines.append(f"   (end_class_light {room_name} {device_id})")
-
-    lines.append("      (finish_class_time))")
-    lines.append("  )")
     
+    # 1. Initial Fluents
+    for name, data in init_dto.fluents.items():
+      if isinstance(data, dict):
+        for arg, val in data.items():
+          lines.append(f"    (= ({name} {arg}) {val})")
+          
+      else:
+        lines.append(f"    (= ({name}) {data})")
+    
+    lines.append("")
+
+    # 2. Timed Events (Timed Initial Literals)
+    for event in init_dto.timed_events:
+      time_val = f"{event.time:.1f}"
+
+      if event.type == "predicate":
+        lines.append(f"    (at {time_val} ({event.predicate}))")
+
+      elif event.type == "fluent":
+        args = f" {' '.join(event.args)}" if event.args else ""
+        lines.append(f"    (at {time_val} (= ({event.fluent}{args}) {event.value}))")
+    
+    lines.append("  )")
     return "\n".join(lines)
-  
-  @staticmethod
-  def _sanitize_name(name: str) -> str:
-    return name.lower().replace(" ", "_")
+
+  def _generate_goal(self, goal_dto) -> str:
+    lines = ["  (:goal", "    (and"]
+
+    for pred in goal_dto.predicates:
+      args = f" {' '.join(pred.args)}" if pred.args else ""
+      lines.append(f"      ({pred.predicate}{args})")
+      
+    lines.append("    )")
+    lines.append("  )")
+    return "\n".join(lines)

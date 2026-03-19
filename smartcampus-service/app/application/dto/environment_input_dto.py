@@ -29,7 +29,7 @@ class TimedEventDTO:
 
 @dataclass
 class InitDTO:
-  fluents: Dict[str, Dict[str, Any]]
+  fluents: Dict[str, Any]
   timed_events: List[TimedEventDTO]
 
 @dataclass

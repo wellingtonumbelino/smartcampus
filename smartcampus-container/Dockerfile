@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
   g++ \
   make \
   ca-certificates \
+  dos2unix \
   && rm -rf /var/lib/apt/lists/*
 
 # Define the working directory
@@ -38,7 +39,8 @@ RUN git clone https://github.com/popftif/popf-tif . && \
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Enable execute permissions for the entry point script
-RUN chmod +x /usr/local/bin/entrypoint.sh && \
+RUN dos2unix /usr/local/bin/entrypoint.sh && \
+  chmod +x /usr/local/bin/entrypoint.sh && \
   ln -sf $(find /opt/popf-tif/planner/release -name "popf3-clp" | head -n 1) /usr/local/bin/popf3-clp && \
   chmod +x /usr/local/bin/popf3-clp
 

@@ -1,5 +1,5 @@
 from app.application.use_cases.generate_pddl_use_case import GeneratePDDLUseCase
-from app.application.dto.environment_input_dto import EnvironmentInputDTO
+from app.application.dto.environment_input_dto import EnvironmentInputDTO, ProblemDefinitionDTO
 from app.domain.entities.environment import Environment
 from app.domain.entities.room import Room
 from app.domain.factories.device_factory import DeviceFactory
@@ -9,9 +9,8 @@ class GeneratePDDLUseCaseImpl(GeneratePDDLUseCase):
   def __init__(self, pddl_generator: PDDLGenerator):
     self._pddl_generator = pddl_generator
 
-  def execute(self, input_data: EnvironmentInputDTO) -> Environment:
-    environment = self._build_domain(input_data)
-    return self._pddl_generator.generate(environment)
+  def execute(self, input_data: ProblemDefinitionDTO) -> str:
+    return self._pddl_generator.generate(input_data)
 
   def _build_domain(self, input_data: EnvironmentInputDTO) -> Environment:
     rooms = []

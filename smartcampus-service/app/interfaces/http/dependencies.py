@@ -9,6 +9,14 @@ from app.infrastructure.pddl.plan_parser import PDDLPlanParser
 _scheduler_instance = None
 _parser_instance = None
 
+def get_plan_parser():
+  global _parser_instance
+  
+  if _parser_instance is None:
+    _parser_instance = PDDLPlanParser()
+
+  return _parser_instance
+
 def get_generate_pddl_use_case():
   return GeneratePDDLUseCaseImpl(pddl_generator=PDDLGenerator())
 
@@ -16,13 +24,15 @@ def get_run_planner_use_case():
   generate_pddl = get_generate_pddl_use_case()
   filesystem = PDDLFilesystemService()
   planner = DockerPlannerExecutionService()
+  parser = get_plan_parser()
+  scheduler = get_scheduler()
 
   return RunPlannerUseCaseImpl(
     generate_pddl_use_case=generate_pddl,
     filesystem_service=filesystem,
     planner_service=planner,
-    parser=_parser_instance,
-    scheduler=_scheduler_instance
+    parser=parser,
+    scheduler=scheduler
   )
 
 def get_scheduler():
