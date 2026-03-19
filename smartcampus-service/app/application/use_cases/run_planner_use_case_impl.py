@@ -1,4 +1,5 @@
 import time
+from datetime import timezone
 
 from pathlib import Path
 from datetime import datetime
@@ -45,7 +46,12 @@ class RunPlannerUseCaseImpl(RunPlannerUseCase):
       if not plan_found:
         raise FileNotFoundError(f"Plan file not found after waiting: {plan_path}")
 
-      actions = self._parser.parse_file(str(plan_path), datetime.now())
+      with open(plan_path, "r") as f:
+        plan_content = f.read()
+      
+      ref_date = datetime.now(timezone.utc)
+
+      actions = self._parser.parse_file(plan_content, ref_date)
       self._scheduler.schedule_many(actions)
 
       execution_time = execution_result.get("execution_time", time.time() - start_time)

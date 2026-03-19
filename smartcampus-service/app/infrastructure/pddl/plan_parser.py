@@ -11,7 +11,7 @@ class PDDLPlanParser:
       if env_val:
         time_unit_to_hours = float(env_val)
       else:
-        time_unit_to_hours = 10.0
+        time_unit_to_hours = 1
     
     self.time_multiplier = time_unit_to_hours
     self.pattern = r"(\d+\.\d+):\s*\(\s*(\w+)(?:\s+(.*?))?\)\s*\[(\d+\.\d+)\]"

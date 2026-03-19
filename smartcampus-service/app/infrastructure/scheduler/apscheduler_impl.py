@@ -66,6 +66,20 @@ class APSchedulerImpl(IScheduler):
       replace_existing=True
     )
 
+  def schedule_many(self, actions: list[ScheduleAction]):
+    self.logger.info(f"Scheduling {len(actions)} actions from plan...")
+
+    actions_to_schedule = [a for a in actions if a.action_name != 'start_campus_operating']
+
+    for action in actions_to_schedule:
+      try:
+        self.schedule_action(action)
+
+      except Exception as e:
+        self.logger.error(f"Failed to schedule action {action.action_name} for device {action.target_device_id}: {e}")
+
+    self.logger.info("All relevant actions have been scheduled in the timeline.")
+
   async def execute_plan_in_batches(self, actions: list[ScheduleAction], seconds_per_unit: float):
     filtered_actions = [a for a in actions if a.action_name != 'start_campus_operating']
     groups = groupby(filtered_actions, key=lambda x: x.execution_time)
