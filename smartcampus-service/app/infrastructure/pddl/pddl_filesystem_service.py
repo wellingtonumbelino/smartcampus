@@ -84,4 +84,4 @@ class PDDLFilesystemService:
     return sorted(jobs, key=lambda x: x["timestamp"])
   
   def get_plan_path(self, job_id: str) -> str:
-    return str((self.JOBS_PATH / job_id / "output" / "plan.txt").resolve())
+    return f"data/jobs/{job_id}/plan.txt"
