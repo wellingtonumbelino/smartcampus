@@ -27,6 +27,7 @@ class DockerPlannerExecutionService:
   def run(self, job_id: str) -> dict:
     with self._execution_lock:
       job_path = self.JOBS_PATH / job_id
+      absolute_job_path = job_path.resolve()
 
       print(f"\n[DEBUG] Job ID: {job_id}")
       print(f"[DEBUG] Path solved: {str(job_path.absolute())}")
@@ -44,7 +45,7 @@ class DockerPlannerExecutionService:
       try:
         cmd = [
           "docker", "run", "--rm",
-          "-v", f"{job_path.resolve()}:/planner/runtime",
+          "-v", f"{absolute_job_path}:/planner/runtime",
           "smart-planner",
           "/planner/runtime/domain.pddl",
           "/planner/runtime/problem.pddl",

@@ -27,9 +27,12 @@ class PDDLFilesystemService:
 
     domain_dst.write_text(domain_src.read_text(encoding="utf-8"), encoding="utf-8")
     return domain_dst
+  
+  def get_plan_path(self, job_id: str) -> Path:
+    return self.JOBS_PATH / job_id / "output" / "plan.txt"
 
   def read_plan(self, job_id: str) -> str:
-    plan_path = self.JOBS_PATH / job_id / "output" / "plan.txt"
+    plan_path = self.get_plan_path(job_id)
 
     if not plan_path.exists():
       raise FileNotFoundError(f"Plan not found: {plan_path}")
@@ -83,5 +86,3 @@ class PDDLFilesystemService:
 
     return sorted(jobs, key=lambda x: x["timestamp"])
   
-  def get_plan_path(self, job_id: str) -> str:
-    return f"data/jobs/{job_id}/plan.txt"
