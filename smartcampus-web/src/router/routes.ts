@@ -7,47 +7,27 @@ function lazyLoad(view: string, path: string) {
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    name: "Home",
-    component: lazyLoad("Home", "Home"),
+    name: "Dashboard",
+    component: lazyLoad("Dashboard", "Dashboard"),
     meta: {
-      pageTitle: "Home",
+      pageTitle: "Dashboard",
     },
   },
   {
     path: "/rooms",
     name: "Rooms",
-    children: [
-      {
-        path: "all",
-        name: "List of Rooms",
-        component: lazyLoad("List", "Rooms"),
-        meta: {
-          pageTitle: "Rooms",
-        },
-      },
-    ],
+    component: lazyLoad("List", "Rooms"),
+    meta: {
+      pageTitle: "Rooms",
+    },
   },
   {
     path: "/devices",
     name: "Devices",
-    children: [
-      {
-        path: "all",
-        name: "List of Devices",
-        component: lazyLoad("List", "Devices"),
-        meta: {
-          pageTitle: "Devices",
-        },
-      },
-      // {
-      //   path: "groups",
-      //   name: "List of Device Groups",
-      //   component: lazyLoad("ListDevicesGroupView", "DevicesGroup"),
-      //   meta: {
-      //     pageTitle: "Device Groups",
-      //   },
-      // },
-    ],
+    component: lazyLoad("List", "Devices"),
+    meta: {
+      pageTitle: "Devices",
+    },
   },
 ];
 

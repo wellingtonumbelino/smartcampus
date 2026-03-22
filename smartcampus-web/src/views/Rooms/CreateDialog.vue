@@ -40,10 +40,10 @@ defineExpose({ toggleDialog });
 
 <template>
   <div class="create-room-dialog">
-    <Dialog v-model:visible="showModal" header="Create a New Room" modal>
+    <Dialog v-model:visible="showModal" header="New Room" modal>
       <div class="create-room-dialog-content">
         <div class="field">
-          <label for="room-name-input">Room Name</label>
+          <label for="room-name-input">Name</label>
           <InputText
             id="room-name-input"
             placeholder="Insert Room Name"
@@ -52,7 +52,7 @@ defineExpose({ toggleDialog });
           />
         </div>
         <div class="field">
-          <label for="room-description-input">Room Description</label>
+          <label for="room-description-input">Description</label>
           <InputText
             id="room-description-input"
             placeholder="Insert Room Description"
