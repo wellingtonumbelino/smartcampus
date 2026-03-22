@@ -1,0 +1,44 @@
+{
+  "devices": [
+    {
+      "id": "urn:bl1:room1:light1",
+      "name": "BL1 SL1 LED 1",
+      "description": "Painel LED da Sala 1 do Bloco 1"
+    },
+    {
+      "id": "urn:bl1:room1:ac1",
+      "name": "BL1 SL1 AC 1",
+      "description": "Ar-Condicionado da Sala 1 do Bloco 1"
+    },
+    {
+      "id": "urn:bl1:room2:light1",
+      "name": "BL1 SL2 LED 1",
+      "description": "Painel LED da Sala 2 do Bloco 1"
+    },
+    {
+      "id": "urn:bl1:room2:ac1",
+      "name": "BL1 SL2 AC 1",
+      "description": "Ar-Condicionado da Sala 2 do Bloco 1"
+    },
+    {
+      "id": "urn:bl2:room1:light1",
+      "name": "BL2 SL1 LED 1",
+      "description": "Painel LED da Sala 1 do Bloco 2"
+    },
+    {
+      "id": "urn:bl2:room1:ac1",
+      "name": "BL2 SL1 AC 1",
+      "description": "Ar-Condicionado da Sala 1 do Bloco 2"
+    },
+    {
+      "id": "urn:bl2:room2:light1",
+      "name": "BL2 SL2 LED 1",
+      "description": "Painel LED da Sala 2 do Bloco 2"
+    },
+    {
+      "id": "urn:bl2:room2:ac1",
+      "name": "BL2 SL2 AC 1",
+      "description": "Ar-Condicionado da Sala 2 do Bloco 2"
+    }
+  ]
+}
