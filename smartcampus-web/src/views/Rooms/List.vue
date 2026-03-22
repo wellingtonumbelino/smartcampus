@@ -1,15 +1,15 @@
-<script setup>
-import { onMounted, ref } from 'vue';
-import CreateRoomDialog from './CreateRoomDialog.vue';
-import { deleteRoomById, getAllRooms } from '@/services/roomService';
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import CreateDialog from "./CreateDialog.vue";
+import { deleteRoomById, getAllRooms } from "../../services/roomService";
 
 const columns = [
-  { header: 'ID', field: 'id' },
-  { header: 'Name', field: 'name' },
-  { header: 'Description', field: 'description' },
+  { header: "ID", field: "id" },
+  { header: "Name", field: "name" },
+  { header: "Description", field: "description" },
 ];
 
-const createRoomDialog = ref(null);
+const createDialog = ref<InstanceType<typeof CreateDialog> | null>(null);
 const tableLoading = ref(false);
 const rooms = ref([]);
 
@@ -17,9 +17,11 @@ onMounted(async () => {
   await loadingAllRooms();
 });
 
-function openCreateRoomDialog() {
-  if (createRoomDialog.value) {
-    createRoomDialog.value.toggleDialog(rooms.value[rooms.value.length - 1] || null);
+function openCreateDialog() {
+  if (createDialog.value) {
+    createDialog.value.toggleDialog(
+      rooms.value[rooms.value.length - 1] || null,
+    );
   }
 }
 
@@ -29,7 +31,7 @@ async function loadingAllRooms() {
   const { data, error } = await getAllRooms();
 
   if (error) {
-    console.error('Error loading rooms:', error);
+    console.error("Error loading rooms:", error);
   } else {
     rooms.value = data;
   }
@@ -37,7 +39,7 @@ async function loadingAllRooms() {
   tableLoading.value = false;
 }
 
-async function removeRoomById(id) {
+async function removeRoomById(id: string) {
   await deleteRoomById(id);
   loadingAllRooms();
 }
@@ -45,11 +47,15 @@ async function removeRoomById(id) {
 
 <template>
   <div class="list-rooms">
-    <CreateRoomDialog ref="createRoomDialog" @roomCreated="loadingAllRooms" />
+    <CreateDialog ref="createDialog" @roomCreated="loadingAllRooms" />
     <DataTable stripedRows :loading="tableLoading" :value="rooms">
       <template #header>
         <div class="table-header">
-          <Button icon="pi pi-plus" label="Create Room" @click="openCreateRoomDialog" />
+          <Button
+            icon="pi pi-plus"
+            label="Create Room"
+            @click="openCreateDialog"
+          />
         </div>
       </template>
       <Column v-for="col in columns" :field="col.field" :header="col.header" />

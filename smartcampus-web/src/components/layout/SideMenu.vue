@@ -1,7 +1,7 @@
-<script setup>
-import Menu from 'primevue/menu';
-import { RouterLink } from 'vue-router';
-import items from '@/helpers/menuItems';
+<script setup lang="ts">
+import Menu from "primevue/menu";
+import { RouterLink } from "vue-router";
+import items from "../../helpers/menuItems";
 </script>
 
 <template>

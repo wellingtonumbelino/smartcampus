@@ -1,9 +1,9 @@
-<script setup>
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
-import { RouterView, useRoute } from 'vue-router';
+<script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
+import { RouterView, useRoute } from "vue-router";
 
 const route = useRoute();
-const title = computed(() => route.meta.pageTitle || 'Default Title');
+const title = computed(() => route.meta.pageTitle || "Default Title");
 let loadingPage = ref(true);
 
 onMounted(() => {

@@ -1,29 +1,34 @@
-<script setup>
-import { getAllDevices } from '@/services/deviceService';
-import { onMounted, ref } from 'vue';
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import { getAllDevices } from "../../services/deviceService";
 
-const columns = [
-  { header: 'ID', field: 'id' },
-  { header: 'Name', field: 'name' },
-  { header: 'Description', field: 'description' },
+interface Column {
+  header: string;
+  field: string;
+}
+
+const columns: Column[] = [
+  { header: "ID", field: "id" },
+  { header: "Name", field: "name" },
+  { header: "Description", field: "description" },
 ];
-
 const tableLoading = ref(false);
-const devices = ref([]);
 
-onMounted(async () => {
-  await loadingAllDevices();
+const allDevices = ref([]);
+
+onMounted(() => {
+  fetchAllDevices();
 });
 
-async function loadingAllDevices() {
+async function fetchAllDevices() {
   tableLoading.value = true;
 
   const { data, error } = await getAllDevices();
 
   if (error) {
-    console.error('Error loading devices:', error);
+    console.error("Error fetching devices:", error);
   } else {
-    devices.value = data;
+    allDevices.value = data;
   }
 
   tableLoading.value = false;

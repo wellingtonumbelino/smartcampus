@@ -1,19 +1,21 @@
-<script setup>
-import { createNewRoom } from '@/services/roomService';
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref } from "vue";
+import { createNewRoom } from "../../services/roomService";
 
-const emit = defineEmits(['roomCreated']);
+const emit = defineEmits(["roomCreated"]);
 
 const showModal = ref(false);
-const roomName = ref('');
-const roomDescription = ref('');
-const roomId = ref(null);
+const roomName = ref("");
+const roomDescription = ref("");
+const roomId = ref("");
 
-function toggleDialog(lastRoom = null) {
+function toggleDialog(lastRoom: { id: string } | null = null) {
   if (lastRoom) {
-    roomId.value = '00'.concat(parseInt(lastRoom.id.slice(-1)) + 1);
+    roomId.value = "00".concat(
+      (parseInt(lastRoom.id.slice(-1)) + 1).toString(),
+    );
   } else {
-    roomId.value = '001';
+    roomId.value = "001";
   }
 
   if (showModal.value) showModal.value = false;
@@ -22,15 +24,15 @@ function toggleDialog(lastRoom = null) {
 
 async function createRoom() {
   await createNewRoom(roomId.value, roomName.value, roomDescription.value);
-  emit('roomCreated');
+  emit("roomCreated");
   clearForm();
   toggleDialog();
 }
 
 function clearForm() {
-  roomName.value = '';
-  roomDescription.value = '';
-  roomId.value = null;
+  roomName.value = "";
+  roomDescription.value = "";
+  roomId.value = "";
 }
 
 defineExpose({ toggleDialog });
@@ -60,7 +62,11 @@ defineExpose({ toggleDialog });
         </div>
       </div>
       <template #footer>
-        <Button label="Cancel" severity="secondary" @click="toggleDialog" />
+        <Button
+          label="Cancel"
+          severity="secondary"
+          @click="() => toggleDialog()"
+        />
         <Button label="Confirm" @click="createRoom" />
       </template>
     </Dialog>

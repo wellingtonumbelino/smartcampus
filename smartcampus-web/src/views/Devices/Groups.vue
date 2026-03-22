@@ -1,8 +1,8 @@
-<script setup>
+<script setup lang="ts">
 const columns = [
-  { header: 'ID', field: 'id' },
-  { header: 'Name', field: 'name' },
-  { header: 'Description', field: 'description' },
+  { header: "ID", field: "id" },
+  { header: "Name", field: "name" },
+  { header: "Description", field: "description" },
 ];
 </script>
 

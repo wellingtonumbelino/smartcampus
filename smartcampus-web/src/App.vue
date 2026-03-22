@@ -1,6 +1,6 @@
-<script setup>
-import PageContent from './layout/PageContent.vue';
-import SideMenu from './layout/SideMenu.vue';
+<script setup lang="ts">
+import PageContent from "./components/layout/PageContent.vue";
+import SideMenu from "./components/layout/SideMenu.vue";
 </script>
 
 <template>
@@ -15,7 +15,7 @@ import SideMenu from './layout/SideMenu.vue';
   display: grid;
   grid-template-columns: 16rem 1fr;
   gap: 1rem;
-  grid-template-areas: 'side-menu page-content';
+  grid-template-areas: "side-menu page-content";
 
   #side-menu {
     grid-area: side-menu;
