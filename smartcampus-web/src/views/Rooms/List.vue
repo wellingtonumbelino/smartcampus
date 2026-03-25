@@ -2,7 +2,6 @@
 import { onMounted, ref } from "vue";
 import CreateDialog from "./CreateDialog.vue";
 import { deleteRoomById, getAllRooms } from "../../services/roomService";
-import mockRooms from "../../_mock/rooms.json";
 
 const columns = [
   { header: "ID", field: "id" },
@@ -20,9 +19,7 @@ onMounted(async () => {
 
 function openCreateDialog() {
   if (createDialog.value) {
-    createDialog.value.toggleDialog(
-      rooms.value[rooms.value.length - 1] || null,
-    );
+    createDialog.value.toggleDialog();
   }
 }
 
@@ -49,7 +46,7 @@ async function removeRoomById(id: string) {
 <template>
   <div class="list-rooms">
     <CreateDialog ref="createDialog" @roomCreated="loadingAllRooms" />
-    <DataTable stripedRows :loading="tableLoading" :value="mockRooms.rooms">
+    <DataTable stripedRows :loading="tableLoading" :value="rooms">
       <template #header>
         <div class="table-header">
           <Button

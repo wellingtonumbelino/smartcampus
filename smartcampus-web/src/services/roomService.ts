@@ -18,7 +18,7 @@ export async function createNewRoom(
 ) {
   try {
     const newRoom = {
-      id: `urn:ngsi-ld:Room:${id}`,
+      id: id,
       type: "Room",
       name: { type: "Text", value: name },
       description: { type: "Text", value: description },

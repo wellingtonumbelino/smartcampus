@@ -9,15 +9,7 @@ const roomName = ref("");
 const roomDescription = ref("");
 const roomId = ref("");
 
-function toggleDialog(lastRoom: { id: string } | null = null) {
-  if (lastRoom) {
-    roomId.value = "00".concat(
-      (parseInt(lastRoom.id.slice(-1)) + 1).toString(),
-    );
-  } else {
-    roomId.value = "001";
-  }
-
+function toggleDialog() {
   if (showModal.value) showModal.value = false;
   else showModal.value = true;
 }
@@ -40,8 +32,22 @@ defineExpose({ toggleDialog });
 
 <template>
   <div class="create-room-dialog">
-    <Dialog v-model:visible="showModal" header="New Room" modal>
+    <Dialog
+      v-model:visible="showModal"
+      header="New Room"
+      modal
+      style="min-width: 20rem"
+    >
       <div class="create-room-dialog-content">
+        <div class="field">
+          <label for="room-id-input">ID</label>
+          <InputText
+            id="room-id-input"
+            placeholder="Insert Room ID"
+            type="text"
+            v-model="roomId"
+          />
+        </div>
         <div class="field">
           <label for="room-name-input">Name</label>
           <InputText
