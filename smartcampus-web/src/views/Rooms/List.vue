@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import CreateDialog from "./CreateDialog.vue";
 import { deleteRoomById, getAllRooms } from "../../services/roomService";
 import mockRooms from "../../_mock/rooms.json";
@@ -14,9 +14,9 @@ const createDialog = ref<InstanceType<typeof CreateDialog> | null>(null);
 const tableLoading = ref(false);
 const rooms = ref([]);
 
-// onMounted(async () => {
-//   await loadingAllRooms();
-// });
+onMounted(async () => {
+  await loadingAllRooms();
+});
 
 function openCreateDialog() {
   if (createDialog.value) {
