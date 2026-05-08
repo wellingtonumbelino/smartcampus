@@ -6,6 +6,7 @@ import router from "./router";
 import HeaderTitle from "./ui/HeaderTitle.vue";
 import "./assets/main.scss";
 import { Button, Column, DataTable, Dialog, InputText } from "primevue";
+import { createPinia } from "pinia";
 
 const app = createApp(App);
 
@@ -23,5 +24,5 @@ app.use(PrimeVue, {
   ripple: true,
 });
 app.use(router);
-
+app.use(createPinia());
 app.mount("#app");

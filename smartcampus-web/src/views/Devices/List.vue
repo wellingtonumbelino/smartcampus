@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-// import mockDevices from "../../_mock/devices.json";
-import { getAllDevices } from "../../services/deviceService";
+import { ref } from "vue";
+import mockDevices from "../../_mock/devices.json";
+// import { getAllDevices } from "../../services/deviceService";
 
 interface Column {
   header: string;
   field: string;
 }
 
-interface Device {
-  id: string;
-  name: string;
-  description: string;
-}
+// interface Device {
+//   id: string;
+//   name: string;
+//   description: string;
+// }
 
 const columns: Column[] = [
   { header: "ID", field: "id" },
@@ -21,28 +21,28 @@ const columns: Column[] = [
 ];
 const tableLoading = ref(false);
 
-const allDevices = ref<Device[]>([]);
+// const allDevices = ref<Device[]>([]);
 
-onMounted(() => {
-  fetchAllDevices();
-});
+// onMounted(() => {
+//   fetchAllDevices();
+// });
 
-async function fetchAllDevices() {
-  try {
-    tableLoading.value = true;
-    const { data } = await getAllDevices();
-    allDevices.value = data;
-  } catch (error) {
-    console.error("Error fetching devices:", error);
-  } finally {
-    tableLoading.value = false;
-  }
-}
+// async function fetchAllDevices() {
+//   try {
+//     tableLoading.value = true;
+//     const { data } = await getAllDevices();
+//     allDevices.value = data;
+//   } catch (error) {
+//     console.error("Error fetching devices:", error);
+//   } finally {
+//     tableLoading.value = false;
+//   }
+// }
 </script>
 
 <template>
   <div class="list-devices">
-    <DataTable stripedRows :loading="tableLoading" :value="allDevices">
+    <DataTable stripedRows :loading="tableLoading" :value="mockDevices.devices">
       <template #header>
         <div class="table-header">
           <Button icon="pi pi-plus" label="Create Device" />

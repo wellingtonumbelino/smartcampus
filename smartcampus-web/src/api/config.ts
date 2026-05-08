@@ -17,4 +17,12 @@ const iotApi = axios.create({
   },
 });
 
-export { roomApi, iotApi };
+const serviceApi = axios.create({
+  baseURL: import.meta.env.VITE_API_SERVICE_URL,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+export { roomApi, iotApi, serviceApi };

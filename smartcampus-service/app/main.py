@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware as CORS
 from contextlib import asynccontextmanager
 from app.interfaces.http.controllers.pddl_controller import router as pddl_router
 from app.interfaces.http.controllers.planner_controller import router as planner_router
@@ -35,7 +36,14 @@ async def lifespan(app: FastAPI):
   # if hasattr(app.state, "scheduler"):
   #   await app.state.scheduler.shutdown()
 
+origins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173"
+]
+
 app = FastAPI(title="Smart Campus Service", lifespan=lifespan)
+
+app.add_middleware(CORS, allow_origins=origins, allow_methods=["*"], allow_headers=["*"], allow_credentials=True)
 
 app.include_router(pddl_router)
 app.include_router(planner_router)

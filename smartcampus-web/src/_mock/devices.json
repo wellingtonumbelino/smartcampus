@@ -1,44 +1,44 @@
 {
   "devices": [
     {
-      "id": "urn:bl1:room1:light1",
-      "name": "BL1 SL1 LED 1",
-      "description": "Painel LED da Sala 1 do Bloco 1"
+      "id": "lamp001001001",
+      "name": "Lâmpada 1",
+      "description": "Lâmpada 1 da Sala Didática 1 do Bloco 1"
     },
     {
-      "id": "urn:bl1:room1:ac1",
-      "name": "BL1 SL1 AC 1",
-      "description": "Ar-Condicionado da Sala 1 do Bloco 1"
+      "id": "airConditioner001001001",
+      "name": "Ar-Condicionado 1",
+      "description": "Ar-condicionado 1 da Sala Didática 1 do Bloco 1"
     },
     {
-      "id": "urn:bl1:room2:light1",
-      "name": "BL1 SL2 LED 1",
-      "description": "Painel LED da Sala 2 do Bloco 1"
+      "id": "lamp001002001",
+      "name": "Lâmpada 1",
+      "description": "Lâmpada 1 da Sala Didática 2 do Bloco 1"
     },
     {
-      "id": "urn:bl1:room2:ac1",
-      "name": "BL1 SL2 AC 1",
-      "description": "Ar-Condicionado da Sala 2 do Bloco 1"
+      "id": "airConditioner001002001",
+      "name": "Ar-Condicionado 1",
+      "description": "Ar-condicionado 1 da Sala Didática 2 do Bloco 1"
     },
     {
-      "id": "urn:bl2:room1:light1",
-      "name": "BL2 SL1 LED 1",
-      "description": "Painel LED da Sala 1 do Bloco 2"
+      "id": "lamp002001001",
+      "name": "Lâmpada 1",
+      "description": "Lâmpada 1 da Sala Didática 1 do Bloco 2"
     },
     {
-      "id": "urn:bl2:room1:ac1",
-      "name": "BL2 SL1 AC 1",
-      "description": "Ar-Condicionado da Sala 1 do Bloco 2"
+      "id": "airConditioner002001001",
+      "name": "Ar-Condicionado 1",
+      "description": "Ar-condicionado 1 da Sala Didática 1 do Bloco 2"
     },
     {
-      "id": "urn:bl2:room2:light1",
-      "name": "BL2 SL2 LED 1",
-      "description": "Painel LED da Sala 2 do Bloco 2"
+      "id": "lamp002001002",
+      "name": "Lâmpada 2",
+      "description": "Lâmpada 2 da Sala Didática 1 do Bloco 2"
     },
     {
-      "id": "urn:bl2:room2:ac1",
-      "name": "BL2 SL2 AC 1",
-      "description": "Ar-Condicionado da Sala 2 do Bloco 2"
+      "id": "airConditioner002001002",
+      "name": "Ar-Condicionado 2",
+      "description": "Ar-condicionado 2 da Sala Didática 1 do Bloco 2"
     }
   ]
 }
