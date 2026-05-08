@@ -13,9 +13,9 @@ import SideMenu from "./components/layout/SideMenu.vue";
 <style scoped lang="scss">
 .main-layout {
   display: grid;
-  grid-template-columns: 16rem 1fr;
-  gap: 1rem;
+  grid-template-columns: auto 1fr;
   grid-template-areas: "side-menu page-content";
+  height: 100%;
 
   #side-menu {
     grid-area: side-menu;

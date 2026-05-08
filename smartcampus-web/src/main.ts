@@ -13,6 +13,7 @@ import {
   Dialog,
   Divider,
   InputText,
+  Menu,
 } from "primevue";
 import { createPinia } from "pinia";
 
@@ -24,6 +25,7 @@ app.component("Dialog", Dialog);
 app.component("Divider", Divider);
 app.component("Card", Card);
 app.component("Column", Column);
+app.component("Menu", Menu);
 app.component("HeaderTitle", HeaderTitle);
 app.component("InputText", InputText);
 

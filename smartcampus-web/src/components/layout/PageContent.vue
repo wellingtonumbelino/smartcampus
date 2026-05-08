@@ -17,7 +17,6 @@ onMounted(() => {
       <p>Loading...</p>
     </template>
     <template v-else>
-      <HeaderTitle :title="title" />
       <RouterView />
     </template>
   </main>
@@ -25,8 +24,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 #page-content {
-  border: 0.0625rem solid #e2e8f0;
-  border-radius: 0.375rem;
-  padding: 1rem;
+  padding: 2rem;
 }
 </style>
