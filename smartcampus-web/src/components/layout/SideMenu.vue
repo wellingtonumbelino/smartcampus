@@ -55,7 +55,6 @@ import items from "../../helpers/menuItems";
 
 <style scoped lang="scss">
 #side-menu {
-  padding: 0.25rem;
   border-right: 1px solid #cecece;
 
   .item-link {
@@ -63,6 +62,8 @@ import items from "../../helpers/menuItems";
     gap: 0.5rem;
     align-items: center;
     text-decoration: none;
+    padding: 0.75rem 1rem;
+    min-width: 9.375rem;
   }
 
   .side-menu-nav {
@@ -73,13 +74,10 @@ import items from "../../helpers/menuItems";
 
     ul {
       list-style: none;
-      padding: 0;
       margin: 0;
+      padding: 0.25rem;
 
       li {
-        padding: 0.5rem 1rem;
-        min-width: 9.375rem;
-
         &:hover {
           background-color: #cecece;
         }
@@ -90,11 +88,12 @@ import items from "../../helpers/menuItems";
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      padding-bottom: 1rem;
+      padding: 0.5rem 0.25rem;
+      border-top: 1px solid #cecece;
 
       .sign-out-option {
         cursor: pointer;
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1rem;
 
         &:hover {
           background-color: #cecece;
