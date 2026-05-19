@@ -18,11 +18,9 @@
       </Card>
 
       <Card class="card-detail-info">
-        <template #title>ACTIONS</template>
+        <template #title>System Planner</template>
 
         <template #content>
-          <Divider />
-
           <div class="actions-button">
             <Button
               label="Run Planner"
@@ -43,38 +41,60 @@
 
       <Card class="card-detail-info">
         <template #title>
-          <span>STATUS</span>
-          <Tag :severity="statusTag.severity" :value="statusTag.value" />
+          <div class="card-header-title">
+            <span>Last Plan Status</span>
+            <Tag
+              rounded
+              :severity="statusTag.severity"
+              :value="statusTag.value"
+            />
+          </div>
         </template>
+
         <template #content>
-          <Divider />
+          <div class="card-content">
+            <div
+              v-if="!loading && plannerStatusResult"
+              class="status-info-container"
+            >
+              <span class="status-info">
+                <label>Execution ID</label>
+                <p>{{ plannerStatusResult?.jobId }}</p>
+              </span>
+              <span class="status-info">
+                <label>Timestamp</label>
+                <p>10-27 14:32:01</p>
+              </span>
+              <span class="status-info">
+                <label>Execution Time</label>
+                <p>{{ plannerStatusResult?.executionTime }}</p>
+              </span>
+              <span class="status-info">
+                <label>Plan Size</label>
+                <p>{{ plannerStatusResult?.actionsCount }}</p>
+              </span>
+              <span class="status-info">
+                <label>States Explored</label>
+                <p>78</p>
+              </span>
+            </div>
 
-          <div v-if="plannerStatusResult" class="status-info-container">
-            <span class="status-info">
-              <label>Execution ID</label>
-              <p>{{ plannerStatusResult?.jobId }}</p>
-            </span>
-            <span class="status-info">
-              <label>Execution Time</label>
-              <p>{{ plannerStatusResult?.executionTime }}</p>
-            </span>
-            <!-- <span class="status-info">
-              <label>N°. Actions Generated</label>
-              <p>{{ plannerStatusResult?.actionsCount }}</p>
-            </span> -->
+            <div v-else-if="loading" class="status-info-container">
+              <Skeleton width="100%" />
+              <Skeleton width="100%" />
+              <Skeleton width="100%" />
+              <Skeleton width="100%" />
+              <Skeleton width="100%" />
+            </div>
+
+            <p v-else>No planner status available.</p>
           </div>
-
-          <div v-else-if="loading" class="status-info-container">
-            <Skeleton width="100%" />
-            <Skeleton width="100%" />
-          </div>
-
-          <p v-else>No planner status available.</p>
         </template>
       </Card>
     </div>
 
     <section class="dashboard-schedule">
+      <PlanTimeline />
       <h2>Scheduled Actions</h2>
       <ul v-if="scheduleActions.length > 0">
         <li v-for="(action, index) in scheduleActions" :key="index">
@@ -94,6 +114,7 @@ import { getSchedulerActions } from "../../../services/schedulerService";
 import type { PlannerStatus } from "../../../types/Planner";
 import type { SchedulerStatus } from "../../../types/Scheduler";
 import mockDevices from "../../../_mock/devices.json";
+import PlanTimeline from "../components/PlanTimeline.vue";
 
 const roomStore = useRoomStore();
 const plannerStatusResult = ref<PlannerStatus | null>(null);
@@ -171,13 +192,24 @@ async function viewSchedule() {
     .card-number-info {
       width: 25%;
     }
+
     .card-detail-info {
       width: 50%;
 
       .p-card-body {
+        .p-card-caption {
+          .p-card-title {
+            .card-header-title {
+              display: flex !important;
+              align-items: center;
+              justify-content: space-between;
+            }
+          }
+        }
+
         .p-card-content {
-          .p-divider-horizontal {
-            margin-top: 0;
+          .card-content {
+            margin-top: 1rem;
           }
         }
       }
@@ -206,6 +238,11 @@ async function viewSchedule() {
           display: flex;
           align-items: center;
           justify-content: space-between;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+          }
         }
 
         .status-card-footer {
