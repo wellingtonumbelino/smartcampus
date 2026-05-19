@@ -4,6 +4,7 @@ export interface PlannerResult {
   message: string;
   status: string;
   scheduled_actions_count: number;
+  success: boolean;
 }
 
 export interface PlannerStatus {
@@ -12,4 +13,5 @@ export interface PlannerStatus {
   message: string;
   status: string;
   actionsCount: number;
+  success?: boolean;
 }

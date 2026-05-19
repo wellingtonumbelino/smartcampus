@@ -3,6 +3,7 @@
     <div class="dashboard-info-actions">
       <Card class="card-number-info">
         <template #title>TOTAL IOT DEVICES</template>
+
         <template #content>
           <p>{{ totalDevices }}</p>
         </template>
@@ -10,6 +11,7 @@
 
       <Card class="card-number-info">
         <template #title>PHYSICAL ROOMS</template>
+
         <template #content>
           <p>{{ roomStore.totalRooms }}</p>
         </template>
@@ -17,8 +19,10 @@
 
       <Card class="card-detail-info">
         <template #title>ACTIONS</template>
+
         <template #content>
           <Divider />
+
           <div class="actions-button">
             <Button
               label="Run Planner"
@@ -26,6 +30,7 @@
               :loading="loading"
               @click="runPlannerService"
             />
+
             <Button
               label="View Schedule"
               icon="pi pi-eye"
@@ -37,8 +42,13 @@
       </Card>
 
       <Card class="card-detail-info">
-        <template #title>STATUS</template>
+        <template #title>
+          <span>STATUS</span>
+          <Tag :severity="statusTag.severity" :value="statusTag.value" />
+        </template>
         <template #content>
+          <Divider />
+
           <div v-if="plannerStatusResult" class="status-info-container">
             <span class="status-info">
               <label>Execution ID</label>
@@ -48,16 +58,17 @@
               <label>Execution Time</label>
               <p>{{ plannerStatusResult?.executionTime }}</p>
             </span>
-            <span class="status-info">
+            <!-- <span class="status-info">
               <label>N°. Actions Generated</label>
               <p>{{ plannerStatusResult?.actionsCount }}</p>
-            </span>
-            <Divider />
-            <div class="status-card-footer">
-              <i class="pi pi-check-circle" />
-              <p>Execution completed without errors.</p>
-            </div>
+            </span> -->
           </div>
+
+          <div v-else-if="loading" class="status-info-container">
+            <Skeleton width="100%" />
+            <Skeleton width="100%" />
+          </div>
+
           <p v-else>No planner status available.</p>
         </template>
       </Card>
@@ -89,6 +100,9 @@ const plannerStatusResult = ref<PlannerStatus | null>(null);
 const loading = ref(false);
 const scheduleLoading = ref(false);
 const scheduleActions = ref<SchedulerStatus[]>([]);
+const statusTag = ref({ severity: "info", value: "Unavailable" });
+
+const totalDevices = mockDevices.devices.length;
 
 onMounted(async () => {
   if (roomStore.rooms.length === 0) {
@@ -96,13 +110,32 @@ onMounted(async () => {
   }
 });
 
-const totalDevices = mockDevices.devices.length;
+async function defineStatusTag() {
+  console.log("chamou", plannerStatusResult.value);
+
+  if (plannerStatusResult.value) {
+    switch (plannerStatusResult.value.success) {
+      case true:
+        statusTag.value = { severity: "success", value: "Success" };
+        break;
+      case false:
+        statusTag.value = { severity: "danger", value: "Error" };
+        break;
+      default:
+        statusTag.value = { severity: "info", value: "Unavailable" };
+    }
+  }
+}
 
 async function runPlannerService() {
   loading.value = true;
+
   const { data, error } = await runPlanner();
+
   if (data) {
     plannerStatusResult.value = data;
+
+    await defineStatusTag();
   } else if (error) {
     plannerStatusResult.value = {
       executionTime: "N/A",
@@ -110,8 +143,10 @@ async function runPlannerService() {
       message: `Error: ${(error as Error).message}`,
       status: "Error",
       actionsCount: 0,
+      success: undefined,
     };
   }
+
   loading.value = false;
 }
 
@@ -138,6 +173,14 @@ async function viewSchedule() {
     }
     .card-detail-info {
       width: 50%;
+
+      .p-card-body {
+        .p-card-content {
+          .p-divider-horizontal {
+            margin-top: 0;
+          }
+        }
+      }
 
       .actions-button {
         display: flex;

@@ -16,6 +16,8 @@ import {
   InputText,
   Menu,
   Menubar,
+  Skeleton,
+  Tag,
 } from "primevue";
 import { createPinia } from "pinia";
 
@@ -32,6 +34,8 @@ app.component("Menu", Menu);
 app.component("Menubar", Menubar);
 app.component("HeaderTitle", HeaderTitle);
 app.component("InputText", InputText);
+app.component("Skeleton", Skeleton);
+app.component("Tag", Tag);
 
 app.use(PrimeVue, {
   theme: {
