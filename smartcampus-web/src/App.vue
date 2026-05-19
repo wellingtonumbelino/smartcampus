@@ -7,9 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import PageContent from "./components/layout/PageContent.vue";
-import SideMenu from "./components/layout/SideMenu.vue";
-import Menu from "./components/layout/Menu.vue";
+import PageContent from "./core/layout/PageContent.vue";
+import SideMenu from "./core/layout/SideMenu.vue";
+import Menu from "./core/layout/Menu.vue";
 </script>
 
 <style scoped lang="scss">

@@ -3,8 +3,8 @@ import PrimeVue from "primevue/config";
 import Aura from "@primeuix/themes/aura";
 import App from "./App.vue";
 import router from "./router";
-import HeaderTitle from "./ui/HeaderTitle.vue";
-import "./assets/main.scss";
+import HeaderTitle from "./shared/components/HeaderTitle.vue";
+import "./styles/main.scss";
 import {
   Avatar,
   Button,

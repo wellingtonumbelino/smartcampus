@@ -6,40 +6,10 @@
         <span class="version">v{{ version }}</span>
       </div>
       <ul>
-        <li
-          v-for="(item, key) in items"
-          :key="item.label.concat(key.toString())"
-        >
-          <span v-if="item.items">
+        <li v-for="item in sideMenuItems" :key="item.label">
+          <router-link :to="item.route" class="item-link">
+            <i :class="item.icon" />
             <span>{{ item.label }}</span>
-            <ul>
-              <li
-                v-for="(child, childKey) in item.items"
-                :key="child.label.concat(childKey.toString())"
-              >
-                <router-link
-                  v-slot="{ href, navigate }"
-                  :to="child.route"
-                  custom
-                >
-                  <a class="item-link" :href="href" @click="navigate">
-                    <i :class="child.icon" />
-                    <span>{{ child.label }}</span>
-                  </a>
-                </router-link>
-              </li>
-            </ul>
-          </span>
-          <router-link
-            v-else
-            v-slot="{ href, navigate }"
-            :to="item.route"
-            custom
-          >
-            <a class="item-link" :href="href" @click="navigate">
-              <i :class="item.icon" />
-              <span>{{ item.label }}</span>
-            </a>
           </router-link>
         </li>
       </ul>
@@ -54,8 +24,12 @@
 </template>
 
 <script setup lang="ts">
-import items from "../../helpers/menuItems";
+import { useNavigation } from "./composables/useNavigation";
 import { version } from "../../../package.json";
+
+const { sideMenuItems } = useNavigation();
+
+console.log("Items side menu", sideMenuItems);
 </script>
 
 <style scoped lang="scss">

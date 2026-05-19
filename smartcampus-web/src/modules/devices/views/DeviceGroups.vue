@@ -1,11 +1,3 @@
-<script setup lang="ts">
-const columns = [
-  { header: "ID", field: "id" },
-  { header: "Name", field: "name" },
-  { header: "Description", field: "description" },
-];
-</script>
-
 <template>
   <div class="list-device-groups">
     <DataTable>
@@ -22,6 +14,14 @@ const columns = [
     </DataTable>
   </div>
 </template>
+
+<script setup lang="ts">
+const columns = [
+  { header: "ID", field: "id" },
+  { header: "Name", field: "name" },
+  { header: "Description", field: "description" },
+];
+</script>
 
 <style scoped lang="scss">
 .list-device-groups {

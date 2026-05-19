@@ -1,4 +1,4 @@
-import { serviceApi } from "../api/config";
+import { serviceApi } from "../core/api/config";
 import type { JobResponse, SchedulerStatus } from "../types/Scheduler";
 
 function mapSchedulerResultToStatus(result: JobResponse): SchedulerStatus[] {

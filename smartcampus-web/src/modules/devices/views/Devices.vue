@@ -1,7 +1,23 @@
+<template>
+  <div class="list-devices">
+    <DataTable stripedRows :loading="tableLoading" :value="mockDevices.devices">
+      <template #header>
+        <div class="table-header">
+          <Button icon="pi pi-plus" label="Create Device" />
+        </div>
+      </template>
+      <Column v-for="col in columns" :field="col.field" :header="col.header" />
+      <Column header="Actions"></Column>
+      <template #empty>
+        <p class="empty-text">No devices registered.</p>
+      </template>
+    </DataTable>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { ref } from "vue";
-import mockDevices from "../../_mock/devices.json";
-// import { getAllDevices } from "../../services/deviceService";
+import mockDevices from "../../../_mock/devices.json";
 
 interface Column {
   header: string;
@@ -39,23 +55,6 @@ const tableLoading = ref(false);
 //   }
 // }
 </script>
-
-<template>
-  <div class="list-devices">
-    <DataTable stripedRows :loading="tableLoading" :value="mockDevices.devices">
-      <template #header>
-        <div class="table-header">
-          <Button icon="pi pi-plus" label="Create Device" />
-        </div>
-      </template>
-      <Column v-for="col in columns" :field="col.field" :header="col.header" />
-      <Column header="Actions"></Column>
-      <template #empty>
-        <p class="empty-text">No devices registered.</p>
-      </template>
-    </DataTable>
-  </div>
-</template>
 
 <style scoped lang="scss">
 .list-devices {

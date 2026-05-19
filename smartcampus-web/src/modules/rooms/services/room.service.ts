@@ -1,13 +1,15 @@
-import { roomApi } from "../api/config";
+import { roomApi } from "../../../core/api/config";
+import type { RoomResponseDTO } from "./room.dto";
 
-export async function getAllRooms() {
+export async function getAllRooms(): Promise<RoomResponseDTO[] | undefined> {
   try {
-    const response = await roomApi.get(
+    const { data } = await roomApi.get(
       "/entities/?type=Room&options=keyValues&attrs=name,description",
     );
-    return { data: response.data, error: null };
+    return data;
   } catch (error) {
-    return { data: null, error };
+    console.error("Error loading rooms:", error);
+    throw error;
   }
 }
 

@@ -1,4 +1,4 @@
-import { serviceApi } from "../api/config";
+import { serviceApi } from "../core/api/config";
 import mockExample from "../_mock/example.json";
 import type { PlannerResult, PlannerStatus } from "../types/Planner";
 

@@ -88,12 +88,12 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import mockDevices from "../../_mock/devices.json";
-import { useRoomStore } from "../../store/roomStore";
-import { runPlanner } from "../../services/plannerService";
-import type { PlannerStatus } from "../../types/Planner";
-import { getSchedulerActions } from "../../services/schedulerService";
-import type { SchedulerStatus } from "../../types/Scheduler";
+import { runPlanner } from "../../../services/plannerService";
+import { useRoomStore } from "../../rooms/store/room.store";
+import { getSchedulerActions } from "../../../services/schedulerService";
+import type { PlannerStatus } from "../../../types/Planner";
+import type { SchedulerStatus } from "../../../types/Scheduler";
+import mockDevices from "../../../_mock/devices.json";
 
 const roomStore = useRoomStore();
 const plannerStatusResult = ref<PlannerStatus | null>(null);
