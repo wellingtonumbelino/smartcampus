@@ -7,12 +7,14 @@ const items = routes.map((route) => {
       items: route.children.map((child) => ({
         label: child.name as string,
         route: route.path + "/" + child.path,
+        icon: child.meta?.icon as string,
       })),
     };
   } else {
     return {
       label: route.name as string,
       route: route.path,
+      icon: route.meta?.icon as string,
     };
   }
 });

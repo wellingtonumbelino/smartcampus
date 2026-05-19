@@ -10,7 +10,7 @@ const routes: RouteRecordRaw[] = [
     name: "Dashboard",
     component: lazyLoad("Dashboard", "Dashboard"),
     meta: {
-      pageTitle: "Dashboard",
+      icon: "pi pi-objects-column",
     },
   },
   {
@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
     name: "Rooms",
     component: lazyLoad("List", "Rooms"),
     meta: {
-      pageTitle: "Rooms",
+      icon: "pi pi-building",
     },
   },
   {
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
     name: "Devices",
     component: lazyLoad("List", "Devices"),
     meta: {
-      pageTitle: "Devices",
+      icon: "pi pi-wifi",
     },
   },
 ];
