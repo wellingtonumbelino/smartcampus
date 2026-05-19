@@ -6,6 +6,7 @@ import router from "./router";
 import HeaderTitle from "./ui/HeaderTitle.vue";
 import "./assets/main.scss";
 import {
+  Avatar,
   Button,
   Card,
   Column,
@@ -14,11 +15,13 @@ import {
   Divider,
   InputText,
   Menu,
+  Menubar,
 } from "primevue";
 import { createPinia } from "pinia";
 
 const app = createApp(App);
 
+app.component("Avatar", Avatar);
 app.component("Button", Button);
 app.component("DataTable", DataTable);
 app.component("Dialog", Dialog);
@@ -26,6 +29,7 @@ app.component("Divider", Divider);
 app.component("Card", Card);
 app.component("Column", Column);
 app.component("Menu", Menu);
+app.component("Menubar", Menubar);
 app.component("HeaderTitle", HeaderTitle);
 app.component("InputText", InputText);
 

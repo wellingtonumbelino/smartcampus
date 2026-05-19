@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { RouterView, useRoute } from "vue-router";
-
-const route = useRoute();
-const title = computed(() => route.meta.pageTitle || "Default Title");
-let loadingPage = ref(true);
-
-onMounted(() => {
-  loadingPage.value = false;
-});
-</script>
-
 <template>
   <main id="page-content" class="page-content">
     <template v-if="loadingPage">
@@ -21,6 +8,17 @@ onMounted(() => {
     </template>
   </main>
 </template>
+
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import { RouterView } from "vue-router";
+
+let loadingPage = ref(true);
+
+onMounted(() => {
+  loadingPage.value = false;
+});
+</script>
 
 <style scoped lang="scss">
 #page-content {

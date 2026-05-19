@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import items from "../../helpers/menuItems";
-</script>
-
 <template>
   <aside id="side-menu" role="menu">
     <nav class="side-menu-nav">
@@ -52,6 +48,10 @@ import items from "../../helpers/menuItems";
     </nav>
   </aside>
 </template>
+
+<script setup lang="ts">
+import items from "../../helpers/menuItems";
+</script>
 
 <style scoped lang="scss">
 #side-menu {
