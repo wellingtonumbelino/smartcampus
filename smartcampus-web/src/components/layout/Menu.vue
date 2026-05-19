@@ -1,7 +1,9 @@
 <template>
   <Menubar id="main-menu">
     <template #start>
-      <span>Automated Planning Management System (APMS)</span>
+      <span class="system-name">
+        Automated Planning Management System (APMS)
+      </span>
     </template>
     <template #end>
       <div>
@@ -14,5 +16,12 @@
 <style scoped lang="scss">
 #main-menu {
   border-radius: 0;
+
+  .p-menubar-start {
+    .system-name {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+  }
 }
 </style>
