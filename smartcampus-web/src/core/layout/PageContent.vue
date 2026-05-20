@@ -23,5 +23,6 @@ onMounted(() => {
 <style scoped lang="scss">
 #page-content {
   padding: 2rem;
+  background-color: #f3f3f5;
 }
 </style>
