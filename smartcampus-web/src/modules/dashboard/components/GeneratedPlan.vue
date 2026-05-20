@@ -3,7 +3,13 @@
   <div class="generated-plan-container">
     <div class="generated-plan-header">
       <span class="generated-plan-title">Last Generate Plan</span>
-      <Button icon="pi pi-play" label="Generate Plan" raised severity="help" />
+      <Button
+        icon="pi pi-play"
+        label="Generate Plan"
+        raised
+        severity="help"
+        @click="$emit('generate-plan')"
+      />
     </div>
 
     <div class="generated-plan-status">
@@ -17,16 +23,25 @@
     </div>
 
     <div class="generated-plan-info">
-      <InfoCard label="Execution time" value="2.5s" />
-      <InfoCard label="Plan size" value="12 actions" />
-      <InfoCard label="states analyzed" value="18" />
-      <InfoCard label="Planner" value="POPF-TIF" />
+      <InfoCard label="Execution time" :value="executionTime" />
+      <InfoCard label="Plan size" :value="planSize" />
+      <InfoCard label="states analyzed" :value="statesAnalyzed" />
+      <InfoCard label="Planner" :value="planner" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import InfoCard from "./InfoCard.vue";
+defineProps<{
+  executionTime: string;
+  loading?: boolean;
+  planner: string;
+  planSize: string;
+  statesAnalyzed: string;
+}>();
+
+defineEmits(["generate-plan"]);
 </script>
 
 <style scoped lang="scss">

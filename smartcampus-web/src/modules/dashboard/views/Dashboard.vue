@@ -17,7 +17,18 @@
       />
     </div>
 
-    <GeneratedPlan />
+    <GeneratedPlan
+      executionTime="1.34s"
+      planner="POPF-TIF"
+      planSize="12 actions"
+      statesAnalyzed="18"
+      :loading="loading"
+      @generate-plan="runPlannerService"
+    />
+
+    <div class="dashboard-plan-actions-schedule">
+      <PlanActionsTimeline :actions="planActions" />
+    </div>
 
     <div class="dashboard-info-actions">
       <Card class="card-detail-info">
@@ -25,13 +36,6 @@
 
         <template #content>
           <div class="actions-button">
-            <Button
-              label="Run Planner"
-              icon="pi pi-play-circle"
-              :loading="loading"
-              @click="runPlannerService"
-            />
-
             <Button
               label="View Schedule"
               icon="pi pi-eye"
@@ -97,7 +101,6 @@
     </div>
 
     <section class="dashboard-schedule">
-      <PlanTimeline />
       <h2>Scheduled Actions</h2>
       <ul v-if="scheduleActions.length > 0">
         <li v-for="(action, index) in scheduleActions" :key="index">
@@ -117,9 +120,9 @@ import { getSchedulerActions } from "../../../services/schedulerService";
 import type { PlannerStatus } from "../../../types/Planner";
 import type { SchedulerStatus } from "../../../types/Scheduler";
 import mockDevices from "../../../_mock/devices.json";
-import PlanTimeline from "../components/PlanTimeline.vue";
 import MetricCard from "../components/MetricCard.vue";
 import GeneratedPlan from "../components/GeneratedPlan.vue";
+import PlanActionsTimeline from "../components/PlanActionsTimeline.vue";
 
 const roomStore = useRoomStore();
 const plannerStatusResult = ref<PlannerStatus | null>(null);
@@ -129,6 +132,24 @@ const scheduleActions = ref<SchedulerStatus[]>([]);
 const statusTag = ref({ severity: "info", value: "Unavailable" });
 
 const totalDevices = mockDevices.devices.length;
+
+const planActions = ref([
+  {
+    executionTime: "1.000",
+    actionName: "Turn on Light in Room 101",
+    duration: "2.000",
+  },
+  {
+    executionTime: "1.001",
+    actionName: "Adjust Thermostat in Room 102",
+    duration: "1.000",
+  },
+  {
+    executionTime: "2.000",
+    actionName: "Lock Door in Room 103",
+    duration: "2.000",
+  },
+]);
 
 onMounted(async () => {
   if (roomStore.rooms.length === 0) {
@@ -196,6 +217,14 @@ async function viewSchedule() {
     gap: 1rem;
     margin-bottom: 0.875rem;
   }
+
+  .dashboard-plan-actions-schedule {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
   .dashboard-info-actions {
     display: flex;
     gap: 2rem;
