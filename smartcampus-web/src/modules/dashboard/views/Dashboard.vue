@@ -17,23 +17,9 @@
       />
     </div>
 
+    <GeneratedPlan />
+
     <div class="dashboard-info-actions">
-      <Card class="card-number-info">
-        <template #title>TOTAL IOT DEVICES</template>
-
-        <template #content>
-          <p>{{ totalDevices }}</p>
-        </template>
-      </Card>
-
-      <Card class="card-number-info">
-        <template #title>PHYSICAL ROOMS</template>
-
-        <template #content>
-          <p>{{ roomStore.totalRooms }}</p>
-        </template>
-      </Card>
-
       <Card class="card-detail-info">
         <template #title>System Planner</template>
 
@@ -133,6 +119,7 @@ import type { SchedulerStatus } from "../../../types/Scheduler";
 import mockDevices from "../../../_mock/devices.json";
 import PlanTimeline from "../components/PlanTimeline.vue";
 import MetricCard from "../components/MetricCard.vue";
+import GeneratedPlan from "../components/GeneratedPlan.vue";
 
 const roomStore = useRoomStore();
 const plannerStatusResult = ref<PlannerStatus | null>(null);
@@ -207,6 +194,7 @@ async function viewSchedule() {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
+    margin-bottom: 0.875rem;
   }
   .dashboard-info-actions {
     display: flex;
