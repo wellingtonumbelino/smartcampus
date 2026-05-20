@@ -1,35 +1,41 @@
 <template>
   <div class="dashboard">
-    <div class="dashboard-iot-info">
-      <MetricCard
-        icon="pi pi-microchip"
-        iconColor="#185FA5"
-        iconBg="#E6F1FB"
-        label="Iot Devices"
-        :value="totalDevices"
-      />
-      <MetricCard
-        icon="pi pi-building"
-        iconColor="#0F6E56"
-        iconBg="#E1F5EE"
-        label="Physical Rooms"
-        :value="roomStore.totalRooms"
-      />
-    </div>
+    <template v-if="!loading && plannerStatusResult">
+      <div class="dashboard-iot-info">
+        <MetricCard
+          icon="pi pi-microchip"
+          iconColor="#185FA5"
+          iconBg="#E6F1FB"
+          label="Iot Devices"
+          :value="totalDevices"
+        />
+        <MetricCard
+          icon="pi pi-building"
+          iconColor="#0F6E56"
+          iconBg="#E1F5EE"
+          label="Physical Rooms"
+          :value="roomStore.totalRooms"
+        />
+      </div>
 
-    <GeneratedPlan
-      executionTime="1.34s"
-      planner="POPF-TIF"
-      planSize="12 actions"
-      statesAnalyzed="18"
-      :loading="loading"
-      @generate-plan="runPlannerService"
-    />
+      <GeneratedPlan
+        executionTime="1.34s"
+        planner="POPF-TIF"
+        planSize="12 actions"
+        statesAnalyzed="18"
+        :loading="loading"
+        @generate-plan="runPlannerService"
+      />
 
-    <div class="dashboard-plan-actions-schedule">
-      <PlanActionsTimeline :actions="planActions" />
-      <ScheduledActions :schedule-actions="schedulerActions" />
-    </div>
+      <div class="dashboard-plan-actions-schedule">
+        <PlanActionsTimeline :actions="planActions" />
+        <ScheduledActions :schedule-actions="schedulerActions" />
+      </div>
+    </template>
+
+    <template v-else>
+      <NoPlan @generate-plan="runPlannerService" />
+    </template>
 
     <!-- <section class="dashboard-schedule">
       <h2>Scheduled Actions</h2>
@@ -55,6 +61,7 @@ import MetricCard from "../components/MetricCard.vue";
 import GeneratedPlan from "../components/GeneratedPlan.vue";
 import PlanActionsTimeline from "../components/PlanActionsTimeline.vue";
 import ScheduledActions from "../components/ScheduledActions.vue";
+import NoPlan from "../components/NoPlan.vue";
 
 const roomStore = useRoomStore();
 const plannerStatusResult = ref<PlannerStatus | null>(null);
