@@ -1,5 +1,22 @@
 <template>
   <div class="dashboard">
+    <div class="dashboard-iot-info">
+      <MetricCard
+        icon="pi pi-microchip"
+        iconColor="#185FA5"
+        iconBg="#E6F1FB"
+        label="Iot Devices"
+        :value="totalDevices"
+      />
+      <MetricCard
+        icon="pi pi-building"
+        iconColor="#0F6E56"
+        iconBg="#E1F5EE"
+        label="Physical Rooms"
+        :value="roomStore.totalRooms"
+      />
+    </div>
+
     <div class="dashboard-info-actions">
       <Card class="card-number-info">
         <template #title>TOTAL IOT DEVICES</template>
@@ -115,6 +132,7 @@ import type { PlannerStatus } from "../../../types/Planner";
 import type { SchedulerStatus } from "../../../types/Scheduler";
 import mockDevices from "../../../_mock/devices.json";
 import PlanTimeline from "../components/PlanTimeline.vue";
+import MetricCard from "../components/MetricCard.vue";
 
 const roomStore = useRoomStore();
 const plannerStatusResult = ref<PlannerStatus | null>(null);
@@ -185,6 +203,11 @@ async function viewSchedule() {
 
 <style scoped lang="scss">
 .dashboard {
+  .dashboard-iot-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
   .dashboard-info-actions {
     display: flex;
     gap: 2rem;
