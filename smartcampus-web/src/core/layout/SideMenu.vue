@@ -1,5 +1,5 @@
 <template>
-  <aside id="side-menu" role="menu">
+  <div id="side-menu">
     <Menu :model="sideMenuItems">
       <template #start>
         <div class="system-info-container">
@@ -25,7 +25,7 @@
         </router-link>
       </template>
     </Menu>
-  </aside>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -39,37 +39,33 @@ const { sideMenuItems } = useNavigation();
 #side-menu {
   height: 100%;
 
-  .p-menu {
-    height: 100%;
+  .p-menu-start {
+    .system-info-container {
+      display: flex;
+      gap: 0.625rem;
+      padding: 0.75rem 1rem;
+      align-items: center;
 
-    .p-menu-start {
-      .system-info-container {
+      .system-info {
         display: flex;
-        gap: 0.625rem;
-        padding: 0.75rem 1rem;
-        align-items: center;
+        flex-direction: column;
 
-        .system-info {
-          display: flex;
-          flex-direction: column;
+        .system-name-acronym {
+          font-size: 0.875rem;
+          font-weight: 500;
+          letter-spacing: 0.025rem;
+        }
 
-          .system-name-acronym {
-            font-size: 0.875rem;
-            font-weight: 500;
-            letter-spacing: 0.025rem;
-          }
-
-          .system-version {
-            font-size: 0.75rem;
-            font-weight: 300;
-          }
+        .system-version {
+          font-size: 0.75rem;
+          font-weight: 300;
         }
       }
     }
+  }
 
-    &.p-component {
-      border-radius: 0;
-    }
+  &.p-component {
+    border-radius: 0;
   }
 }
 </style>

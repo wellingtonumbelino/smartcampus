@@ -15,12 +15,13 @@ import Menu from "./core/layout/Menu.vue";
 <style scoped lang="scss">
 .main-layout {
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto 1fr;
+  width: 100%;
+  min-height: 100vh;
+  grid-template-columns: 12.5rem 1fr;
+  grid-template-rows: 3.25rem 1fr;
   grid-template-areas:
     "side-menu main-menu"
     "side-menu page-content";
-  height: 100%;
 
   #side-menu {
     grid-area: side-menu;
