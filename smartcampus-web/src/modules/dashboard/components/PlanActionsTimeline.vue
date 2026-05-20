@@ -18,15 +18,15 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  actions: PlanAction[];
-}>();
-
 type PlanAction = {
   executionTime: string;
   actionName: string;
   duration: string;
 };
+
+defineProps<{
+  actions: PlanAction[];
+}>();
 </script>
 
 <style scoped lang="scss">

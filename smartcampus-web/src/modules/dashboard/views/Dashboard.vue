@@ -28,79 +28,10 @@
 
     <div class="dashboard-plan-actions-schedule">
       <PlanActionsTimeline :actions="planActions" />
+      <ScheduledActions :schedule-actions="schedulerActions" />
     </div>
 
-    <div class="dashboard-info-actions">
-      <Card class="card-detail-info">
-        <template #title>System Planner</template>
-
-        <template #content>
-          <div class="actions-button">
-            <Button
-              label="View Schedule"
-              icon="pi pi-eye"
-              :loading="scheduleLoading"
-              @click="viewSchedule"
-            />
-          </div>
-        </template>
-      </Card>
-
-      <Card class="card-detail-info">
-        <template #title>
-          <div class="card-header-title">
-            <span>Last Plan Status</span>
-            <Tag
-              rounded
-              :severity="statusTag.severity"
-              :value="statusTag.value"
-            />
-          </div>
-        </template>
-
-        <template #content>
-          <div class="card-content">
-            <div
-              v-if="!loading && plannerStatusResult"
-              class="status-info-container"
-            >
-              <span class="status-info">
-                <label>Execution ID</label>
-                <p>{{ plannerStatusResult?.jobId }}</p>
-              </span>
-              <span class="status-info">
-                <label>Timestamp</label>
-                <p>10-27 14:32:01</p>
-              </span>
-              <span class="status-info">
-                <label>Execution Time</label>
-                <p>{{ plannerStatusResult?.executionTime }}</p>
-              </span>
-              <span class="status-info">
-                <label>Plan Size</label>
-                <p>{{ plannerStatusResult?.actionsCount }}</p>
-              </span>
-              <span class="status-info">
-                <label>States Explored</label>
-                <p>78</p>
-              </span>
-            </div>
-
-            <div v-else-if="loading" class="status-info-container">
-              <Skeleton width="100%" />
-              <Skeleton width="100%" />
-              <Skeleton width="100%" />
-              <Skeleton width="100%" />
-              <Skeleton width="100%" />
-            </div>
-
-            <p v-else>No planner status available.</p>
-          </div>
-        </template>
-      </Card>
-    </div>
-
-    <section class="dashboard-schedule">
+    <!-- <section class="dashboard-schedule">
       <h2>Scheduled Actions</h2>
       <ul v-if="scheduleActions.length > 0">
         <li v-for="(action, index) in scheduleActions" :key="index">
@@ -108,7 +39,7 @@
         </li>
       </ul>
       <p v-else>No scheduled actions available.</p>
-    </section>
+    </section> -->
   </div>
 </template>
 
@@ -123,6 +54,7 @@ import mockDevices from "../../../_mock/devices.json";
 import MetricCard from "../components/MetricCard.vue";
 import GeneratedPlan from "../components/GeneratedPlan.vue";
 import PlanActionsTimeline from "../components/PlanActionsTimeline.vue";
+import ScheduledActions from "../components/ScheduledActions.vue";
 
 const roomStore = useRoomStore();
 const plannerStatusResult = ref<PlannerStatus | null>(null);
@@ -148,6 +80,24 @@ const planActions = ref([
     executionTime: "2.000",
     actionName: "Lock Door in Room 103",
     duration: "2.000",
+  },
+]);
+
+const schedulerActions = ref([
+  {
+    actionId: "turn_on_air_conditioner:bl1_sl1_ac1",
+    scheduled: "2024-10-01T10:00:00Z",
+    command: "ON",
+  },
+  {
+    actionId: "adjust_thermostat:bl1_sl1_t1",
+    scheduled: "2024-10-01T11:00:00Z",
+    command: "Set Temperature to 22°C",
+  },
+  {
+    actionId: "lock_door:bl1_sl1_d1",
+    scheduled: "2024-10-01T12:00:00Z",
+    command: "LOCK",
   },
 ]);
 
@@ -223,99 +173,6 @@ async function viewSchedule() {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-top: 1rem;
-  }
-
-  .dashboard-info-actions {
-    display: flex;
-    gap: 2rem;
-
-    .card-number-info {
-      width: 25%;
-    }
-
-    .card-detail-info {
-      width: 50%;
-
-      .p-card-body {
-        .p-card-caption {
-          .p-card-title {
-            .card-header-title {
-              display: flex !important;
-              align-items: center;
-              justify-content: space-between;
-            }
-          }
-        }
-
-        .p-card-content {
-          .card-content {
-            margin-top: 1rem;
-          }
-        }
-      }
-
-      .actions-button {
-        display: flex;
-        gap: 1rem;
-        width: 100%;
-
-        .p-button {
-          flex: 1;
-          height: 2.5rem;
-        }
-      }
-
-      .status-info-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-
-        p {
-          margin: 0;
-        }
-
-        .status-info {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-
-          &:not(:last-child) {
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 0.5rem;
-          }
-        }
-
-        .status-card-footer {
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-        }
-      }
-    }
-  }
-
-  .dashboard-section {
-    h3 {
-      margin: 0.5rem;
-    }
-  }
-
-  .cards {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .card {
-    flex: 1;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.375rem;
-    padding: 0.5rem;
-    text-align: center;
-  }
-
-  .dashboard-actions {
-    display: flex;
-    gap: 1rem;
   }
 }
 </style>
