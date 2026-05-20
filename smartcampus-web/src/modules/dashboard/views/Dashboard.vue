@@ -33,6 +33,10 @@
       </div>
     </template>
 
+    <template v-else-if="loading">
+      <LoadingPlan />
+    </template>
+
     <template v-else>
       <NoPlan @generate-plan="runPlannerService" />
     </template>
@@ -62,6 +66,7 @@ import GeneratedPlan from "../components/GeneratedPlan.vue";
 import PlanActionsTimeline from "../components/PlanActionsTimeline.vue";
 import ScheduledActions from "../components/ScheduledActions.vue";
 import NoPlan from "../components/NoPlan.vue";
+import LoadingPlan from "../components/LoadingPlan.vue";
 
 const roomStore = useRoomStore();
 const plannerStatusResult = ref<PlannerStatus | null>(null);
