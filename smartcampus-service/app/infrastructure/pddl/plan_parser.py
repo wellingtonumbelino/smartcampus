@@ -1,6 +1,7 @@
 import os
 import re
 from datetime import datetime, timedelta, timezone
+from typing import Optional, Tuple, List
 from app.domain.entities.plan import ScheduleAction
 
 class PDDLPlanParser:
@@ -23,8 +24,16 @@ class PDDLPlanParser:
       "start_campus_operating": "START"
     }
 
-  def parse_file(self, file_content: str, reference_date: datetime, override_multiplier: float = None) -> list[ScheduleAction]:
+  def parse_file(self, file_content: str, reference_date: datetime, override_multiplier: float = None) -> Tuple[List[ScheduleAction], Optional[int]]:
     actions = []
+
+    states_evaluated = None
+    m = re.search(r"^;\s*States evaluated:\s*(\d+)", file_content, re.MULTILINE)
+    if m:
+      try:
+        states_evaluated = int(m.group(1))
+      except ValueError:
+        states_evaluated = None
 
     multiplier = override_multiplier if override_multiplier is not None else self.time_multiplier
 
@@ -48,7 +57,11 @@ class PDDLPlanParser:
       room_id = params[0] if len(params) > 0 else None
       device_id = params[-1] if params else None
       
-      command = self.action_map.get(action_name, "UNKNOWN")
+      command = "UNKNOWN"
+      for key, val in self.action_map.items():
+        if action_name == key or action_name.startswith(key) or key in action_name:
+          command = val
+          break
 
       if reference_date.tzinfo is None:
         reference_date = reference_date.replace(tzinfo=timezone.utc)
@@ -63,4 +76,4 @@ class PDDLPlanParser:
         duration=duration
       ))
 
-    return actions
+    return actions, states_evaluated

@@ -4,7 +4,6 @@ from app.application.use_cases.run_planner_use_case import RunPlannerUseCase
 from app.interfaces.http.schemas.environment_request import EnvironmentRequest
 from app.interfaces.http.mappers.environment_mapper import map_environment_request_to_dto
 from app.interfaces.http.dependencies import get_run_planner_use_case
-from app.application.dto.environment_input_dto import EnvironmentInputDTO
 
 router = APIRouter(prefix="/planner", tags=["Planner"])
 

@@ -51,7 +51,7 @@ class RunPlannerUseCaseImpl(RunPlannerUseCase):
       
       ref_date = datetime.now(timezone.utc)
 
-      actions = self._parser.parse_file(plan_content, ref_date)
+      actions, states_evaluated = self._parser.parse_file(plan_content, ref_date)
       self._scheduler.schedule_many(actions)
 
       execution_time = execution_result.get("execution_time", time.time() - start_time)
@@ -62,6 +62,7 @@ class RunPlannerUseCaseImpl(RunPlannerUseCase):
         "job_id": job_id,
         "status": "completed",
         "scheduled_actions_count": len(actions),
+        "states_evaluated": states_evaluated,
         **execution_result
       }
     

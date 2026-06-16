@@ -7,7 +7,7 @@ def test_pddl_parser_conversion():
 
   plan_text = "0.100: (turn_on_light_during_class room1 l1) [0.200]"
 
-  actions = parser.parse_file(plan_text, reference_time)
+  actions, states = parser.parse_file(plan_text, reference_time)
 
   assert len(actions) == 1
   assert actions[0].execution_time == datetime(2023, 1, 1, 9, 0, 0, tzinfo=timezone.utc)
@@ -16,5 +16,6 @@ def test_pddl_parser_conversion():
 
 def test_pddl_parser_invalid_line():
   parser = PDDLPlanParser()
-  actions = parser.parse_file("This is not a valid line", datetime.now())
+  actions, states = parser.parse_file("This is not a valid line", datetime.now())
   assert len(actions) == 0
+  assert states is None

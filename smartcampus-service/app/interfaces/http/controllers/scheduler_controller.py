@@ -29,7 +29,7 @@ async def run_plan_manually(
     with open("data/plan.pddl", "r", encoding="utf-8") as f:
       plan_content = f.read()
 
-    actions = parser.parse_file(plan_content, ref_date, override_multiplier=multiplier_in_hours)
+    actions, states = parser.parse_file(plan_content, ref_date, override_multiplier=multiplier_in_hours)
 
     background_tasks.add_task(scheduler.execute_plan_in_batches, actions, seconds_per_unit)
 
@@ -38,6 +38,7 @@ async def run_plan_manually(
       "reference_date": ref_date,
       "seconds_per_pddl_unit": seconds_per_unit,
       "actions_count": len(actions),
+      "states_evaluated": states,
       "actions": [
         {
           "name": action.action_name,
