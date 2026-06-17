@@ -11,7 +11,7 @@ export interface JobResponse {
 }
 
 export interface SchedulerStatus {
-  jobId: string;
-  nextAction: string;
-  args: string;
+  actionId: string;
+  scheduled: string;
+  command: string;
 }

@@ -4,10 +4,11 @@ import type { PlannerResult, PlannerStatus } from "../types/Planner";
 
 function mapPlannerResultToStatus(result: PlannerResult): PlannerStatus {
   return {
-    executionTime: result.execution_time.toString().concat(" ms"),
+    executionTime: result.execution_time.toFixed(2).toString().concat(" ms"),
     jobId: result.job_id,
     message: result.message,
     status: result.status,
+    statesEvaluated: result.states_evaluated,
     actionsCount: result.scheduled_actions_count,
   };
 }

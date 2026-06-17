@@ -7,12 +7,22 @@
       <DataTable :value="scheduleActions">
         <Column v-for="col in columns" :header="col.header">
           <template #body="{ data }">
-            <span class="p-column-data-field">{{ data[col.field] }}</span>
+            <span class="p-column-data-field">
+              {{
+                col.field === "scheduled"
+                  ? formatDate(data[col.field])
+                  : data[col.field]
+              }}
+            </span>
           </template>
         </Column>
         <Column header="Status">
-          <template #body>
-            <Tag rounded severity="success" value="Success" />
+          <template #body="{ data }">
+            <Tag
+              rounded
+              :severity="setTagSeverity(data.scheduled)"
+              :value="setTagValue(data.scheduled)"
+            />
           </template>
         </Column>
       </DataTable>
@@ -21,19 +31,17 @@
 </template>
 
 <script setup lang="ts">
-type ScheduledAction = {
-  actionId: string;
-  scheduled: string;
-  command: string;
-};
+import type { SchedulerStatus } from "../../../types/Scheduler";
 
 type ColActionItem = {
   field: string;
   header: string;
 };
 
-defineProps<{
-  scheduleActions: ScheduledAction[];
+type StatusTagType = "success" | "info";
+
+const props = defineProps<{
+  scheduleActions: SchedulerStatus[];
 }>();
 
 const columns: ColActionItem[] = [
@@ -41,6 +49,42 @@ const columns: ColActionItem[] = [
   { field: "scheduled", header: "Scheduled" },
   { field: "command", header: "Command" },
 ];
+
+function formatDate(value: string): string {
+  const date = new Date(value);
+
+  if (isNaN(date.getTime())) return value;
+
+  const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(
+    date,
+  );
+  const day = String(date.getDate()).padStart(2, "0");
+  const year = date.getFullYear();
+
+  const hours = date.getHours() % 12 || 12;
+  const minute = String(date.getMinutes()).padStart(2, "0");
+  const period = date.getHours() < 12 ? "AM" : "PM";
+
+  return `${month} ${day} ${year} ${hours}:${minute} ${period}`;
+}
+
+function handleScheduledDataExecuted(value: string): boolean {
+  const targetDate = new Date(value);
+  const currentDate = new Date();
+
+  targetDate.setUTCMilliseconds(0);
+  currentDate.setUTCMilliseconds(0);
+
+  return targetDate.getTime() > currentDate.getTime();
+}
+
+function setTagValue(value: string): string {
+  return handleScheduledDataExecuted(value) ? "Pending" : "Sending";
+}
+
+function setTagSeverity(value: string): StatusTagType {
+  return handleScheduledDataExecuted(value) ? "info" : "success";
+}
 </script>
 
 <style scoped lang="scss">

@@ -24,8 +24,8 @@
 
     <div class="generated-plan-info">
       <InfoCard label="Execution time" :value="executionTime" />
-      <InfoCard label="Plan size" :value="planSize" />
-      <InfoCard label="states analyzed" :value="statesAnalyzed" />
+      <InfoCard label="Plan size" :value="`${planSize} actions`" />
+      <InfoCard label="States analyzed" :value="statesAnalyzed" />
       <InfoCard label="Planner" :value="planner" />
     </div>
   </div>
@@ -37,8 +37,8 @@ defineProps<{
   executionTime: string;
   loading?: boolean;
   planner: string;
-  planSize: string;
-  statesAnalyzed: string;
+  planSize: number;
+  statesAnalyzed: number;
 }>();
 
 defineEmits(["generate-plan"]);

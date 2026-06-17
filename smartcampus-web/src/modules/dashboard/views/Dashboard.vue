@@ -19,17 +19,17 @@
       </div>
 
       <GeneratedPlan
-        executionTime="1.34s"
         planner="POPF-TIF"
-        planSize="12 actions"
-        statesAnalyzed="18"
+        :executionTime="plannerStatusResult.executionTime"
         :loading="loading"
+        :planSize="plannerStatusResult.actionsCount"
+        :statesAnalyzed="plannerStatusResult.statesEvaluated"
         @generate-plan="runPlannerService"
       />
 
       <div class="dashboard-plan-actions-schedule">
         <PlanActionsTimeline :actions="planActions" />
-        <ScheduledActions :schedule-actions="schedulerActions" />
+        <ScheduledActions :schedule-actions="scheduleActions" />
       </div>
     </template>
 
@@ -40,16 +40,6 @@
     <template v-else>
       <NoPlan @generate-plan="runPlannerService" />
     </template>
-
-    <!-- <section class="dashboard-schedule">
-      <h2>Scheduled Actions</h2>
-      <ul v-if="scheduleActions.length > 0">
-        <li v-for="(action, index) in scheduleActions" :key="index">
-          {{ action.jobId }}
-        </li>
-      </ul>
-      <p v-else>No scheduled actions available.</p>
-    </section> -->
   </div>
 </template>
 
@@ -120,8 +110,6 @@ onMounted(async () => {
 });
 
 async function defineStatusTag() {
-  console.log("chamou", plannerStatusResult.value);
-
   if (plannerStatusResult.value) {
     switch (plannerStatusResult.value.success) {
       case true:
@@ -145,6 +133,7 @@ async function runPlannerService() {
     plannerStatusResult.value = data;
 
     await defineStatusTag();
+    await viewSchedule();
   } else if (error) {
     plannerStatusResult.value = {
       executionTime: "N/A",
@@ -152,6 +141,7 @@ async function runPlannerService() {
       message: `Error: ${(error as Error).message}`,
       status: "Error",
       actionsCount: 0,
+      statesEvaluated: 0,
       success: undefined,
     };
   }
