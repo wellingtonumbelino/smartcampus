@@ -45,10 +45,16 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { runPlanner } from "../../../services/plannerService";
+import {
+  getPlannerByJobId,
+  runPlanner,
+} from "../../../services/plannerService";
 import { useRoomStore } from "../../rooms/store/room.store";
 import { getSchedulerActions } from "../../../services/schedulerService";
-import type { PlannerStatus } from "../../../types/Planner";
+import type {
+  PlannerResultJobIdModel,
+  PlannerStatus,
+} from "../../../types/Planner";
 import type { SchedulerStatus } from "../../../types/Scheduler";
 import mockDevices from "../../../_mock/devices.json";
 import MetricCard from "../components/MetricCard.vue";
@@ -63,45 +69,10 @@ const plannerStatusResult = ref<PlannerStatus | null>(null);
 const loading = ref(false);
 const scheduleLoading = ref(false);
 const scheduleActions = ref<SchedulerStatus[]>([]);
+const planActions = ref<PlannerResultJobIdModel[]>([]);
 const statusTag = ref({ severity: "info", value: "Unavailable" });
 
 const totalDevices = mockDevices.devices.length;
-
-const planActions = ref([
-  {
-    executionTime: "1.000",
-    actionName: "Turn on Light in Room 101",
-    duration: "2.000",
-  },
-  {
-    executionTime: "1.001",
-    actionName: "Adjust Thermostat in Room 102",
-    duration: "1.000",
-  },
-  {
-    executionTime: "2.000",
-    actionName: "Lock Door in Room 103",
-    duration: "2.000",
-  },
-]);
-
-const schedulerActions = ref([
-  {
-    actionId: "turn_on_air_conditioner:bl1_sl1_ac1",
-    scheduled: "2024-10-01T10:00:00Z",
-    command: "ON",
-  },
-  {
-    actionId: "adjust_thermostat:bl1_sl1_t1",
-    scheduled: "2024-10-01T11:00:00Z",
-    command: "Set Temperature to 22°C",
-  },
-  {
-    actionId: "lock_door:bl1_sl1_d1",
-    scheduled: "2024-10-01T12:00:00Z",
-    command: "LOCK",
-  },
-]);
 
 onMounted(async () => {
   if (roomStore.rooms.length === 0) {
@@ -133,6 +104,7 @@ async function runPlannerService() {
     plannerStatusResult.value = data;
 
     await defineStatusTag();
+    await getPlanActions(data.jobId);
     await viewSchedule();
   } else if (error) {
     plannerStatusResult.value = {
@@ -158,6 +130,16 @@ async function viewSchedule() {
     console.error("Error fetching schedule actions:", error);
   }
   scheduleLoading.value = false;
+}
+
+async function getPlanActions(jobId: string) {
+  const { data, error } = await getPlannerByJobId(jobId);
+
+  if (data) {
+    planActions.value = data;
+  } else if (error) {
+    console.error("Error fetching schedule actions:", error);
+  }
 }
 </script>
 

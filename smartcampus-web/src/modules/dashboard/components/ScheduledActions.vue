@@ -92,6 +92,8 @@ function setTagSeverity(value: string): StatusTagType {
   background-color: white;
   border-radius: 0.75rem;
   border: 0.5px solid rgba(0, 0, 0, 0.15);
+  max-height: 50rem;
+  overflow-x: hidden;
 
   .scheduled-actions-header {
     padding: 1.25rem;
@@ -105,6 +107,7 @@ function setTagSeverity(value: string): StatusTagType {
 
   .scheduled-actions-body {
     overflow-x: auto;
+    max-height: 46rem;
 
     .p-datatable {
       .p-datatable-table-container {

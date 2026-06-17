@@ -17,3 +17,22 @@ export interface PlannerStatus {
   statesEvaluated: number;
   success?: boolean;
 }
+
+export type PlanResultType = {
+  execution_time: string;
+  action_name: string;
+  duration: string;
+};
+export interface PlannerResultJobId {
+  job_id: string;
+  status: string;
+  execution_time: number;
+  timestamp: string;
+  plan: PlanResultType[];
+}
+
+export interface PlannerResultJobIdModel {
+  executionTime: string;
+  actionName: string;
+  duration: string;
+}

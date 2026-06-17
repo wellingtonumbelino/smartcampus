@@ -33,7 +33,8 @@ defineProps<{
 .plan-actions-timeline-container {
   background-color: white;
   border-radius: 0.75rem;
-  overflow: hidden;
+  overflow-x: hidden;
+  max-height: 50rem;
   border: 0.5px solid rgba(0, 0, 0, 0.15);
 
   .plan-actions-timeline-header {
@@ -47,6 +48,9 @@ defineProps<{
   }
 
   .plan-actions-timeline-body {
+    overflow-y: auto;
+    max-height: 46rem;
+
     .plan-actions-items {
       display: flex;
       align-items: center;
