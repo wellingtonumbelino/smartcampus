@@ -19,3 +19,18 @@ def test_pddl_parser_invalid_line():
   actions, states = parser.parse_file("This is not a valid line", datetime.now())
   assert len(actions) == 0
   assert states is None
+
+
+def test_serialize_plan_returns_structured_items():
+  parser = PDDLPlanParser()
+  plan_text = "1.001: (turn_on_air_conditioner bl1 bl1sl1) [0.200]"
+
+  serialized = parser.serialize_plan(plan_text)
+
+  assert serialized == [
+    {
+      "execution_time": "1.001",
+      "action_name": "turn_on_air_conditioner bl1 bl1sl1",
+      "duration": "0.200"
+    }
+  ]

@@ -3,7 +3,8 @@ from app.infrastructure.planner.planner_output_service import PlannerOutputServi
 from app.application.use_cases.run_planner_use_case import RunPlannerUseCase
 from app.interfaces.http.schemas.environment_request import EnvironmentRequest
 from app.interfaces.http.mappers.environment_mapper import map_environment_request_to_dto
-from app.interfaces.http.dependencies import get_run_planner_use_case
+from app.interfaces.http.dependencies import get_run_planner_use_case, get_plan_parser
+from app.infrastructure.pddl.plan_parser import PDDLPlanParser
 
 router = APIRouter(prefix="/planner", tags=["Planner"])
 
@@ -22,7 +23,7 @@ def run_planner(
     raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/result/{job_id}")
-def get_plan(job_id: str):
+def get_plan(job_id: str, parser: PDDLPlanParser = Depends(get_plan_parser)):
   """Recupera o resultado de um planejamento executado."""
   output_service = PlannerOutputService(job_id)
 
@@ -36,7 +37,8 @@ def get_plan(job_id: str):
   
   try:
     metadata = output_service.get_metadata()
-    plan = output_service.read_plan()
+    plan_content = output_service.read_plan()
+    plan = parser.serialize_plan(plan_content)
     error_log = output_service.get_error_log()
   except FileNotFoundError as e:
     raise HTTPException(status_code=404, detail=str(e))

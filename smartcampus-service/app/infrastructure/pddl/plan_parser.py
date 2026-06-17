@@ -77,3 +77,28 @@ class PDDLPlanParser:
       ))
 
     return actions, states_evaluated
+
+  def serialize_plan(self, file_content: str) -> list[dict]:
+    plan_items = []
+
+    for line in file_content.splitlines():
+      match = re.search(self.pattern, line)
+      if not match:
+        continue
+
+      raw_time = match.group(1)
+      action_name = match.group(2)
+      params_raw = match.group(3) or ""
+      params = params_raw.strip().split() if params_raw.strip() else []
+      duration = match.group(4)
+
+      if params:
+        action_name = action_name + ' ' + ' '.join(params)
+
+      plan_items.append({
+        "execution_time": raw_time,
+        "action_name": action_name,
+        "duration": duration
+      })
+
+    return plan_items
