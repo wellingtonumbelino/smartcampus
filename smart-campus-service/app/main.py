@@ -54,7 +54,6 @@ app.add_middleware(
     allow_credentials=True,
 )
 
-
 app.include_router(pddl_router)
 app.include_router(planner_router)
 app.include_router(scheduler_router)
