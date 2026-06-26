@@ -13,6 +13,8 @@ import {
   DataTable,
   Dialog,
   Divider,
+  IconField,
+  InputIcon,
   InputText,
   Menu,
   Menubar,
@@ -33,6 +35,8 @@ app.component("Card", Card);
 app.component("Column", Column);
 app.component("Menu", Menu);
 app.component("Menubar", Menubar);
+app.component("IconField", IconField);
+app.component("InputIcon", InputIcon);
 app.component("HeaderTitle", HeaderTitle);
 app.component("InputText", InputText);
 app.component("Skeleton", Skeleton);

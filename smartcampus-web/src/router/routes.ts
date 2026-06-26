@@ -21,14 +21,14 @@ const routes: RouteRecordRaw[] = [
   //     icon: "pi pi-building",
   //   },
   // },
-  // {
-  //   path: "/devices",
-  //   name: "Devices",
-  //   component: lazyLoad("List", "Devices"),
-  //   meta: {
-  //     icon: "pi pi-wifi",
-  //   },
-  // },
+  {
+    path: "/devices",
+    name: "Devices",
+    component: lazyLoad("Devices", "devices"),
+    meta: {
+      icon: "pi pi-microchip",
+    },
+  },
 ];
 
 export default routes;

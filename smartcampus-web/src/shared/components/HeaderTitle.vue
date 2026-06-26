@@ -14,5 +14,8 @@ defineProps({
 <style scoped lang="scss">
 .header-template {
   margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 </style>
