@@ -10,6 +10,9 @@ from app.interfaces.http.controllers.mock_api_controller import (
     router as mock_api_router,
 )
 
+# routes
+from app.routers.user_router import router as user_router
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -58,3 +61,5 @@ app.include_router(pddl_router)
 app.include_router(planner_router)
 app.include_router(scheduler_router)
 app.include_router(mock_api_router)
+
+app.include_router(user_router)
