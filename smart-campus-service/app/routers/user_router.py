@@ -19,7 +19,7 @@ async def create_user(
             detail="This email is already registered.",
         )
 
-    return user_repo.create(user_data)
+    return await user_repo.create(user_data)
 
 
 @router.get("/{email}", response_model=UserResponse)

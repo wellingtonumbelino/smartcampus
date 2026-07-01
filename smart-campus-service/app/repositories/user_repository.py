@@ -25,15 +25,16 @@ class UserRepository(UserRepositoryInterface):
         result = await self.db.execute(query)
         return result.scalars().first()
 
-    def create(self, user_data: UserCreate) -> User:
+    async def create(self, user_data: UserCreate) -> User:
         new_user = User(email=user_data.email, password_hash=user_data.password)
 
         try:
             self.db.add(new_user)
-            self.db.commit()
-            self.db.refresh(new_user)
+            await self.db.commit()
+            await self.db.refresh(new_user)
 
             return new_user
+
         except Exception:
-            self.db.rollback()
+            await self.db.rollback()
             raise
