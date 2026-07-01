@@ -26,7 +26,7 @@ class UserRepository(UserRepositoryInterface):
         return result.scalars().first()
 
     def create(self, user_data: UserCreate) -> User:
-        new_user = User(email=user_data.email, hashed_password=user_data.password)
+        new_user = User(email=user_data.email, password_hash=user_data.password)
 
         try:
             self.db.add(new_user)
