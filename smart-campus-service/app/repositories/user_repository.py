@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from app.models.user_model import User
 from app.schemas.user_schema import UserCreate
@@ -16,11 +17,13 @@ class UserRepositoryInterface(ABC):
 
 
 class UserRepository(UserRepositoryInterface):
-    def __init__(self, db: Session):
+    def __init__(self, db: AsyncSession):
         self.db = db
 
-    def get_user_by_email(self, email: str) -> User | None:
-        return self.db.query(User).filter(User.email == email).first()
+    async def get_user_by_email(self, email: str) -> User | None:
+        query = select(User).where(User.email == email)
+        result = await self.db.execute(query)
+        return result.scalars().first()
 
     def create(self, user_data: UserCreate) -> User:
         new_user = User(email=user_data.email, hashed_password=user_data.password)

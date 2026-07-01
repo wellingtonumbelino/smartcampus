@@ -12,7 +12,7 @@ class UserCreate(UserBase):
 
 class UserResponse(UserBase):
     id: int
-    created_at: datetime
+    created_at: datetime.datetime
     email: EmailStr
 
     model_config = ConfigDict(from_attributes=True)
