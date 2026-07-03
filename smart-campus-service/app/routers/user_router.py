@@ -1,36 +1,21 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 
-from app.dependencies.user_deps import get_user_repository
+from app.dependencies.user_deps import get_user_service
 from app.schemas.user_schema import UserResponse, UserCreate
-from app.repositories.user_repository import UserRepository
+from app.services.user_service import UserService
 
 router = APIRouter(prefix="/users", tags=["User"])
 
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def create_user(
-    user_data: UserCreate, user_repo: UserRepository = Depends(get_user_repository)
+    user_data: UserCreate, user_service: UserService = Depends(get_user_service)
 ):
-    db_user = await user_repo.get_user_by_email(user_data.email)
-
-    if db_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="This email is already registered.",
-        )
-
-    return await user_repo.create(user_data)
+    return await user_service.create_user(user_data)
 
 
 @router.get("/{email}", response_model=UserResponse)
 async def get_user_by_email(
-    email: str, user_repo: UserRepository = Depends(get_user_repository)
+    email: str, user_service: UserService = Depends(get_user_service)
 ) -> UserResponse:
-    db_user = await user_repo.get_user_by_email(email)
-
-    if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found."
-        )
-
-    return db_user
+    return await user_service.get_user_by_email(email)

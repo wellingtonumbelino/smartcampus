@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware as CORS
 from contextlib import asynccontextmanager
+
 from app.interfaces.http.controllers.pddl_controller import router as pddl_router
 from app.interfaces.http.controllers.planner_controller import router as planner_router
 from app.interfaces.http.controllers.scheduler_controller import (
@@ -9,6 +10,9 @@ from app.interfaces.http.controllers.scheduler_controller import (
 from app.interfaces.http.controllers.mock_api_controller import (
     router as mock_api_router,
 )
+
+# core
+from app.core.exceptions import register_exception_handlers
 
 # routes
 from app.routers.user_router import router as user_router
@@ -48,6 +52,8 @@ async def lifespan(app: FastAPI):
 origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
 app = FastAPI(title="Smart Campus Service", lifespan=lifespan)
+
+register_exception_handlers(app)
 
 app.add_middleware(
     CORS,
