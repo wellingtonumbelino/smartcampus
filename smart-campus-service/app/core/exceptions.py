@@ -20,6 +20,12 @@ class ConflictError(DomainError):
     pass
 
 
+class NotAuthenticatedError(DomainError):
+    """Raised when a user is not authenticated."""
+
+    pass
+
+
 def register_exception_handlers(app: FastAPI):
     @app.exception_handler(ConflictError)
     async def conflict_error_handler(
@@ -35,4 +41,12 @@ def register_exception_handlers(app: FastAPI):
     ) -> JSONResponse:
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND, content={"detail": str(exc)}
+        )
+
+    @app.exception_handler(NotAuthenticatedError)
+    async def not_authenticated_error_handler(
+        request: Request, exc: NotAuthenticatedError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED, content={"detail": str(exc)}
         )

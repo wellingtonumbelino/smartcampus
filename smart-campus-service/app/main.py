@@ -15,7 +15,8 @@ from app.interfaces.http.controllers.mock_api_controller import (
 from app.core.exceptions import register_exception_handlers
 
 # routes
-from app.routers.user_router import router as user_router
+from app.routers.auth_router import auth_router
+from app.routers.user_router import user_router
 
 
 @asynccontextmanager
@@ -68,4 +69,5 @@ app.include_router(planner_router)
 app.include_router(scheduler_router)
 app.include_router(mock_api_router)
 
+app.include_router(auth_router)
 app.include_router(user_router)
