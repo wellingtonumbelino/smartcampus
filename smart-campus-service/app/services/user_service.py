@@ -1,3 +1,4 @@
+from app.core.security import SecurityService
 from app.exceptions.user_exceptions import (
     UserAlreadyExistsErrorException,
     UserNotFoundErrorException,
@@ -17,7 +18,7 @@ class UserService:
         if existing_user:
             raise UserAlreadyExistsErrorException(email=user_data.email)
 
-        hashed_password = user_data.password  # Replace with actual hashing logic
+        hashed_password = SecurityService.hash_password(user_data.password)
         user_to_persist = user_data.model_copy(update={"password": hashed_password})
 
         return await self.user_repository.create(user_to_persist)
