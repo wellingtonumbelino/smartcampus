@@ -3,7 +3,6 @@ from datetime import timedelta
 from app.core.security import SecurityService
 from app.exceptions.auth_exceptions import InvalidCredentialsErrorException
 from app.repositories.user_repository import UserRepositoryInterface
-from app.schemas.auth_schema import TokenResponse
 
 
 class AuthService:
@@ -30,21 +29,12 @@ class AuthService:
             "email": user.email,
         }
 
-    async def generate_refresh_token(self, token: str) -> dict:
-        decoded_token = SecurityService.decode_access_token(token)
-
-        if not decoded_token:
-            raise InvalidCredentialsErrorException()
-
-        user = await self.user_repository.get_user_by_email(decoded_token.get("sub"))
-
-        access_token = SecurityService.create_access_token(user.email)
-        refresh_token = SecurityService.create_access_token(
-            user.email, timedelta(days=1)
-        )
+    async def generate_refresh_token(self, email: str) -> dict:
+        access_token = SecurityService.create_access_token(email)
+        refresh_token = SecurityService.create_access_token(email, timedelta(days=1))
 
         return {
             "access_token": access_token,
             "refresh_token": refresh_token,
-            "email": user.email,
+            "email": email,
         }

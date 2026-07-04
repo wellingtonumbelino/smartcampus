@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, status
 
 from app.dependencies.auth_deps import get_current_user
 from app.dependencies.user_deps import get_user_service
+from app.models.user_model import User
 from app.schemas.user_schema import UserResponse, UserCreate
 from app.services.user_service import UserService
-from app.schemas.user_schema import UserBase
 
 user_router = APIRouter(prefix="/users", tags=["User"])
 
@@ -22,6 +22,6 @@ async def create_user(
 async def get_user_by_email(
     email: str,
     user_service: UserService = Depends(get_user_service),
-    current_user: UserBase = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ) -> UserResponse:
     return await user_service.get_user_by_email(email)
