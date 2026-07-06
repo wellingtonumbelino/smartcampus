@@ -12,4 +12,4 @@ class AuthUser(AuthBase):
 class TokenResponse(AuthBase):
     access_token: str
     refresh_token: str | None = None
-    token_type: str = "bearer"
+    token_type: str = "Bearer"
