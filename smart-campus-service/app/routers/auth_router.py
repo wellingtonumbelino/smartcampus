@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, status
 
-from app.dependencies.auth_deps import get_auth_service, get_current_user
-from app.models.user_model import User
+from app.dependencies.auth_deps import get_auth_service, get_current_refresh_token
 from app.schemas.auth_schema import AuthUser, TokenResponse
 from app.services.auth_service import AuthService
 
@@ -22,6 +21,6 @@ async def login(
 )
 async def refresh_token(
     auth_service: AuthService = Depends(get_auth_service),
-    current_user: User = Depends(get_current_user),
+    refresh_payload: dict = Depends(get_current_refresh_token),
 ):
-    return await auth_service.generate_refresh_token(current_user.email)
+    return await auth_service.refresh_token(refresh_payload.get("sub"))

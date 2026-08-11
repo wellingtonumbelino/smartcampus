@@ -7,6 +7,7 @@ from app.core.settings import Settings
 
 SECRET_KEY = Settings().SECRET_KEY
 ACCESS_TOKEN_EXPIRE_MINUTES = int(Settings().ACCESS_TOKEN_EXPIRE_MINUTES)
+REFRESH_TOKEN_EXPIRE_MINUTES = int(Settings().REFRESH_TOKEN_EXPIRE_MINUTES)
 ALGORITHM = Settings().ALGORITHM
 
 
@@ -25,24 +26,31 @@ class SecurityService:
         )
 
     @staticmethod
-    def create_access_token(email: str, expires_delta: timedelta | None = None) -> str:
-        payload = {"sub": email}
-
-        if expires_delta:
-            expire = datetime.now(timezone.utc) + expires_delta
-        else:
-            expire = datetime.now(timezone.utc) + timedelta(
-                minutes=ACCESS_TOKEN_EXPIRE_MINUTES
-            )
-
-        payload.update({"exp": expire})
+    def _create_token(email: str, expires_delta: timedelta, token_type: str) -> str:
+        expire = datetime.now(timezone.utc) + expires_delta
+        payload = {"sub": email, "exp": expire, "type": token_type}
 
         return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
     @staticmethod
-    def decode_access_token(token: str) -> dict | None:
-        try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-            return payload
-        except jwt.PyJWTError:
-            return None
+    def create_access_token(email: str) -> str:
+        return SecurityService._create_token(
+            email, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES), token_type="access"
+        )
+
+    @staticmethod
+    def create_refresh_token(email: str) -> str:
+        return SecurityService._create_token(
+            email, timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES), token_type="refresh"
+        )
+
+    @staticmethod
+    def decode_token(token: str, expected_type: str) -> dict:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+        if payload.get("type") != expected_type:
+            raise jwt.InvalidTokenError(
+                f"Expected a '{expected_type}' token, got '{payload.get('type')}'"
+            )
+
+        return payload

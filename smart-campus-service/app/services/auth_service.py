@@ -19,9 +19,7 @@ class AuthService:
             raise InvalidCredentialsErrorException()
 
         access_token = SecurityService.create_access_token(user.email)
-        refresh_token = SecurityService.create_access_token(
-            user.email, timedelta(days=1)
-        )
+        refresh_token = SecurityService.create_refresh_token(user.email)
 
         return {
             "access_token": access_token,
@@ -29,9 +27,9 @@ class AuthService:
             "email": user.email,
         }
 
-    async def generate_refresh_token(self, email: str) -> dict:
+    async def refresh_token(self, email: str) -> dict:
         access_token = SecurityService.create_access_token(email)
-        refresh_token = SecurityService.create_access_token(email, timedelta(days=1))
+        refresh_token = SecurityService.create_refresh_token(email)
 
         return {
             "access_token": access_token,
