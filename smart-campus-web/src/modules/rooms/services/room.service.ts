@@ -1,4 +1,4 @@
-import { roomApi } from "../../../core/api/config";
+import { roomApi } from "../../../config/api";
 import type { RoomResponseDTO } from "./room.dto";
 
 export async function getAllRooms(): Promise<RoomResponseDTO[] | undefined> {

@@ -1,14 +1,14 @@
 import type { RouteRecordRaw } from "vue-router";
 
-function lazyLoad(view: string, path: string) {
-  return () => import(`@/modules/${path}/views/${view}.vue`);
+function lazyLoad(path: string, view: string) {
+  return () => import(`@/views/${path}/${view}.vue`);
 }
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Dashboard",
-    component: lazyLoad("Dashboard", "dashboard"),
+    component: lazyLoad("Dashboard", "DashboardView"),
     meta: {
       icon: "pi pi-objects-column",
     },
@@ -21,14 +21,14 @@ const routes: RouteRecordRaw[] = [
   //     icon: "pi pi-building",
   //   },
   // },
-  {
-    path: "/devices",
-    name: "Devices",
-    component: lazyLoad("Devices", "devices"),
-    meta: {
-      icon: "pi pi-microchip",
-    },
-  },
+  // {
+  //   path: "/devices",
+  //   name: "Devices",
+  //   component: lazyLoad("Devices", "devices"),
+  //   meta: {
+  //     icon: "pi pi-microchip",
+  //   },
+  // },
 ];
 
 export default routes;

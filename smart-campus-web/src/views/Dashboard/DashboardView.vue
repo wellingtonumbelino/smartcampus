@@ -48,21 +48,21 @@ import { onMounted, ref } from "vue";
 import {
   getPlannerByJobId,
   runPlanner,
-} from "../../../services/plannerService";
-import { useRoomStore } from "../../rooms/store/room.store";
-import { getSchedulerActions } from "../../../services/schedulerService";
+} from "../../services/plannerService.ts";
+import { useRoomStore } from "../../modules/rooms/store/room.store.ts";
+import { getSchedulerActions } from "../../services/schedulerService.ts";
 import type {
   PlannerResultJobIdModel,
   PlannerStatus,
-} from "../../../types/Planner";
-import type { SchedulerStatus } from "../../../types/Scheduler";
-import mockDevices from "../../../_mock/devices.json";
-import MetricCard from "../components/MetricCard.vue";
-import GeneratedPlan from "../components/GeneratedPlan.vue";
-import PlanActionsTimeline from "../components/PlanActionsTimeline.vue";
-import ScheduledActions from "../components/ScheduledActions.vue";
-import NoPlan from "../components/NoPlan.vue";
-import LoadingPlan from "../components/LoadingPlan.vue";
+} from "../../shared/types/Planner.ts";
+import type { SchedulerStatus } from "../../shared/types/Scheduler.ts";
+import mockDevices from "../../_mock/devices.json";
+import MetricCard from "./components/MetricCard.vue";
+import GeneratedPlan from "./components/GeneratedPlan.vue";
+import PlanActionsTimeline from "./components/PlanActionsTimeline.vue";
+import ScheduledActions from "./components/ScheduledActions.vue";
+import NoPlan from "./components/NoPlan.vue";
+import LoadingPlan from "./components/LoadingPlan.vue";
 
 const roomStore = useRoomStore();
 const plannerStatusResult = ref<PlannerStatus | null>(null);

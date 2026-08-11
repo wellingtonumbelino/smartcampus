@@ -4,7 +4,7 @@ import Aura from "@primeuix/themes/aura";
 import App from "./App.vue";
 import router from "./router";
 import HeaderTitle from "./shared/components/HeaderTitle.vue";
-import "./styles/main.scss";
+import "./main.scss";
 import {
   Avatar,
   Button,

@@ -1,11 +1,11 @@
-import { serviceApi } from "../core/api/config";
+import { serviceApi } from "../config/api";
 import mockExample from "../_mock/example.json";
 import type {
   PlannerResult,
   PlannerResultJobId,
   PlannerResultJobIdModel,
   PlannerStatus,
-} from "../types/Planner";
+} from "../shared/types/Planner";
 
 function mapPlannerResultToStatus(result: PlannerResult): PlannerStatus {
   return {

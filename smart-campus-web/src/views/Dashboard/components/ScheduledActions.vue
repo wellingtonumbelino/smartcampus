@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import type { SchedulerStatus } from "../../../types/Scheduler";
+import type { SchedulerStatus } from "../../../shared/types/Scheduler";
 
 type ColActionItem = {
   field: string;

@@ -1,4 +1,4 @@
-import { roomApi } from "../core/api/config";
+import { roomApi } from "../config/api";
 
 export async function getAllBuildings() {
   try {

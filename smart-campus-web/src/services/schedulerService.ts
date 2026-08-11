@@ -1,5 +1,5 @@
-import { serviceApi } from "../core/api/config";
-import type { JobResponse, SchedulerStatus } from "../types/Scheduler";
+import { serviceApi } from "../config/api";
+import type { JobResponse, SchedulerStatus } from "../shared/types/Scheduler";
 
 function mapJobId(jobId: string): string {
   return jobId.split(":").slice(0, 2).join(":");

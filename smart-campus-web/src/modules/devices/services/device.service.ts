@@ -1,4 +1,4 @@
-import { iotApi } from "../../../core/api/config";
+import { iotApi } from "../../../config/api";
 
 export async function getAllDevices() {
   try {
