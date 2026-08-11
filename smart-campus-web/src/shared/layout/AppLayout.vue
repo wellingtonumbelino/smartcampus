@@ -1,9 +1,15 @@
 <template>
-  <AppLayout />
+  <div class="main-layout">
+    <SideMenu />
+    <Menu />
+    <PageContent />
+  </div>
 </template>
 
 <script setup lang="ts">
-import AppLayout from "./shared/layout/AppLayout.vue";
+import PageContent from "../components/PageContent.vue";
+import SideMenu from "../components/SideMenu.vue";
+import Menu from "../components/Menu.vue";
 </script>
 
 <style scoped lang="scss">
